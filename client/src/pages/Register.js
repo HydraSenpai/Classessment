@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FormRow, Alert } from '../components';
 import { useState, useEffect } from 'react';
 import { useUserContext } from '../context/user_context';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const initialState = {
   name: '',
@@ -16,6 +16,7 @@ const Register = () => {
   const { showAlert, displayAlert, setUser, isLoading, user } =
     useUserContext();
   const navigate = useNavigate();
+  let location = useLocation();
 
   const handleSubmit = (e) => {
     e.preventDefault();

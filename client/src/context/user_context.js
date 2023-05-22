@@ -8,8 +8,10 @@ import {
   SET_USER_BEGIN,
 } from '../actions';
 
+const user = localStorage.getItem('user');
+
 const initialState = {
-  user: null,
+  user: user ? JSON.parse(user) : null,
   isLoading: false,
   showAlert: false,
   alertText: '',
@@ -20,6 +22,14 @@ const UserContext = React.createContext();
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const addUserToLocalStorage = (user) => {
+    localStorage.setItem('user', JSON.stringify(user));
+  };
+
+  const removeUserFromLocalStorage = () => {
+    localStorage.removeItem('user');
+  };
 
   const displayAlert = () => {
     dispatch({ type: SHOW_ALERT });
@@ -35,7 +45,9 @@ const UserProvider = ({ children }) => {
   const setUser = ({ name, email, password }) => {
     dispatch({ type: SET_USER_BEGIN });
     try {
+      const newUser = { name, email, password };
       dispatch({ type: SET_USER_SUCCESS, payload: { name, email, password } });
+      addUserToLocalStorage(newUser);
     } catch (error) {
       dispatch({ type: SET_USER_ERROR });
       console.log(error);
