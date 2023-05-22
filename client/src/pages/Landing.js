@@ -50,4 +50,8 @@ const Wrapper = styled.div`
     color: var(--primary-500);
     font-weight: 500;
   }
+  .header {
+    display: flex;
+    justify-content: center;
+  }
 `;

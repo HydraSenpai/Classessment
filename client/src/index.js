@@ -1,6 +1,6 @@
+import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import 'normalize.css';
 import './index.css';
 import App from './App';
 import { UserProvider } from './context/user_context';
