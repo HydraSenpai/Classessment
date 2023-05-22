@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import img from '../assets/images/landing.svg';
+import { Link } from 'react-router-dom';
 
 const Landing = () => {
   return (
@@ -14,11 +15,12 @@ const Landing = () => {
             <span className='bold'>Classessment</span> is the go-to class score
             and grade tracking app! Effortlessly enter and edit grades for any
             class into the class profiler and view insightful statistics and
-            graphs on your progress. Track current and expected grades to make
-            it effortless to achieve your best result. Use Classessment free
-            today!
+            graphs on your progress. Track current and expected grades making it
+            easy to achieve your best result. Use Classessment free today!
           </p>
-          <button className='btn'>Login!</button>
+          <Link to='/register' className='btn'>
+            Login!
+          </Link>
         </div>
         <div>
           <img src={img} alt='classassment main' className='logo' />
