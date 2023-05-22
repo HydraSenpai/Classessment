@@ -1,33 +1,90 @@
 import styled from 'styled-components';
-import { FormRow } from '../components';
-import { useState } from 'react';
+import { FormRow, Alert } from '../components';
+import { useState, useEffect } from 'react';
+import { useUserContext } from '../context/user_context';
+import { useNavigate } from 'react-router-dom';
+
+const initialState = {
+  name: '',
+  email: '',
+  password: '',
+};
 
 const Register = () => {
   const [login, setLogin] = useState(false);
+  const [userDetails, setUserDetails] = useState(initialState);
+  const { showAlert, displayAlert, setUser, isLoading, user } =
+    useUserContext();
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { name, email, password } = userDetails;
+    if (!email || (!name && !login) || !password) {
+      displayAlert();
+      return;
+    }
+    setUser({ name, email, password });
+  };
+
+  const handleChange = (e) => {
+    setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
+  };
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    }
+  }, [user, navigate]);
+
   return (
     <Wrapper>
-      <form className='form'>
+      <form className='form' onSubmit={handleSubmit}>
         <h1 className='title'>{login ? 'Login' : 'Register'}</h1>
         <span className='title-underline'></span>
+        {showAlert && <Alert />}
         {/* Name - WONT NEED WHEN LOGGING IN SO USE CONDITIONAL RENDER*/}
-        {!login && <FormRow name='name' type='text' labelText='First Name' />}
+        {!login && (
+          <FormRow
+            name='name'
+            type='text'
+            labelText='First Name'
+            handleChange={handleChange}
+            value={userDetails.name}
+          />
+        )}
         {/* Email */}
-        <FormRow name='email' type='email' labelText='Email' />
+        <FormRow
+          name='email'
+          type='email'
+          labelText='Email'
+          value={userDetails.email}
+          handleChange={handleChange}
+        />
         {/* Password */}
-        <FormRow name='password' type='password' labelText='password' />
+        <FormRow
+          name='password'
+          type='password'
+          labelText='password'
+          handleChange={handleChange}
+          value={userDetails.password}
+        />
         <button type='submit' className='btn submit-btn'>
           {login ? 'Login' : 'Register'}
         </button>
         <p>
           {!login
             ? 'Already achieving your best grades?'
-            : 'Ready to achieve your best grades?'}
+            : 'Ready to start achieving your best grades?'}
           <button
             type='button'
             className='member-btn'
             onClick={() => setLogin(!login)}
+            disabled={isLoading}
           >
-            {!login ? 'Login' : 'Register'}
+            {!isLoading ? (!login ? 'Login' : 'Register') : 'Waiting...'}
           </button>
         </p>
       </form>
