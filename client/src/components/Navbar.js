@@ -1,10 +1,14 @@
 import { FaBars } from 'react-icons/fa';
 import styled from 'styled-components';
+import { useAppContext } from '../context/app_context';
 
 const Navbar = () => {
+  const { toggleSidebar } = useAppContext();
   return (
     <Wrapper>
-      <FaBars className='icon' />
+      <button className='toggle' onClick={toggleSidebar}>
+        <FaBars className='icon' />
+      </button>
       <h2>Dashboard</h2>
       <h3>logout</h3>
     </Wrapper>
@@ -27,5 +31,12 @@ const Wrapper = styled.nav`
   }
   .icon {
     font-size: 1.75em;
+  }
+  .toggle {
+    background: none;
+    border: none;
+    padding: none;
+    margin: none;
+    cursor: pointer;
   }
 `;
