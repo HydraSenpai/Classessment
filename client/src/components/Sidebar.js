@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Logo } from './';
+import { Logo, NavLinks } from './';
 import { useAppContext } from '../context/app_context';
 
 const Sidebar = () => {
@@ -8,11 +8,7 @@ const Sidebar = () => {
     <Wrapper>
       <div className={showSidebar ? 'sidebar' : 'hide sidebar'}>
         <Logo />
-        <div className='links'>
-          <h4>Link</h4>
-          <h4>Link</h4>
-          <h4>Link</h4>
-        </div>
+        <NavLinks />
       </div>
     </Wrapper>
   );
@@ -25,10 +21,10 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2em;
+    gap: 3em;
     transition: var(--transition);
     background-color: white;
-    padding-top: 0.5em;
+    padding-top: 0.3em;
     height: 100vh;
     width: 13em;
   }

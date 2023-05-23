@@ -1,4 +1,4 @@
-import { FaBars } from 'react-icons/fa';
+import { FaBars, FaX } from 'react-icons/fa';
 import styled from 'styled-components';
 import { useAppContext } from '../context/app_context';
 
@@ -18,7 +18,7 @@ const Navbar = () => {
 export default Navbar;
 
 const Wrapper = styled.nav`
-  height: 5em;
+  height: 6em;
   background-color: white;
   display: flex;
   justify-content: space-between;
@@ -31,6 +31,7 @@ const Wrapper = styled.nav`
   }
   .icon {
     font-size: 1.75em;
+    color: var(--black);
   }
   .toggle {
     background: none;
