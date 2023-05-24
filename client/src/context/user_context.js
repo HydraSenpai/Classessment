@@ -9,6 +9,9 @@ import {
   LOGIN_USER_ERROR,
   LOGIN_USER_BEGIN,
   REMOVE_USER,
+  REGISTER_USER_BEGIN,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_ERROR,
 } from '../actions';
 
 const user = localStorage.getItem('user');
@@ -52,9 +55,30 @@ const UserProvider = ({ children }) => {
   };
 
   const setUser = async (currentUser) => {
-    dispatch({ type: LOGIN_USER_BEGIN });
+    dispatch({ type: REGISTER_USER_BEGIN });
     try {
       const response = await axios.post('/api/v1/auth/register', currentUser);
+      console.log(response);
+      dispatch({ type: REGISTER_USER_SUCCESS, payload: response.data.user });
+      addUserToLocalStorage(response.data.user);
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: REGISTER_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const loginUser = async (currentUser) => {
+    dispatch({ type: LOGIN_USER_BEGIN });
+    const { email, password } = currentUser;
+    try {
+      const response = await axios.post('/api/v1/auth/login', {
+        email,
+        password,
+      });
       console.log(response);
       dispatch({ type: LOGIN_USER_SUCCESS, payload: response.data.user });
       addUserToLocalStorage(response.data.user);
@@ -70,7 +94,7 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ ...state, displayAlert, setUser, logoutUser }}
+      value={{ ...state, displayAlert, setUser, logoutUser, loginUser }}
     >
       {children}
     </UserContext.Provider>

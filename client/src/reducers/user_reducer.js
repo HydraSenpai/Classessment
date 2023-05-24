@@ -5,6 +5,9 @@ import {
   LOGIN_USER_ERROR,
   LOGIN_USER_BEGIN,
   REMOVE_USER,
+  REGISTER_USER_BEGIN,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_ERROR,
 } from '../actions';
 import { initialState } from '../context/user_context';
 
@@ -42,6 +45,31 @@ const user_reducer = (state, action) => {
     };
   }
   if (action.type === LOGIN_USER_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg || 'Unable to login, try again later...',
+    };
+  }
+  if (action.type === REGISTER_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === REGISTER_USER_SUCCESS) {
+    return {
+      ...state,
+      user: action.payload,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'Account Created! Redirecting...',
+    };
+  }
+  if (action.type === REGISTER_USER_ERROR) {
     return {
       ...state,
       isLoading: false,

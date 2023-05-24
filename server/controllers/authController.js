@@ -31,33 +31,24 @@ const register = async (req, res, next) => {
   });
 };
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
-  //check if any fields are missing at server
   if (!email || !password) {
     throw new CustomAPIError(
       'Please provide all values',
       StatusCodes.BAD_REQUEST
     );
   }
-  //email has to be unique so check if email is already in database
-  const userAlreadyExists = await User.findOne({ email });
-  if (userAlreadyExists) {
-    throw new CustomAPIError(
-      'This email is already in use',
-      StatusCodes.BAD_REQUEST
-    );
+  const user = await User.findOne({ email }).select('+password');
+  if (!user) {
+    throw new CustomAPIError('Invalid Credentials', StatusCodes.UNAUTHORIZED);
   }
-  //submit user info to database
-  const user = await User.create({ name, email, password });
-  //const token = user.createJWT();
-  res.status(StatusCodes.CREATED).json({
-    user: {
-      email: user.email,
-      lastName: user.lastName,
-      name: user.name,
-    },
-  });
+  const isPassword = await user.comparePassword(password);
+  if (!isPassword) {
+    throw new CustomAPIError('Invalid Credentials', StatusCodes.UNAUTHORIZED);
+  }
+  user.password = undefined;
+  res.status(StatusCodes.OK).json({ user });
 };
 
 const updateUser = async (req, res) => {

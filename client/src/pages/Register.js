@@ -13,7 +13,7 @@ const initialState = {
 const Register = () => {
   const [login, setLogin] = useState(false);
   const [userDetails, setUserDetails] = useState(initialState);
-  const { showAlert, displayAlert, setUser, isLoading, user } =
+  const { showAlert, displayAlert, setUser, isLoading, user, loginUser } =
     useUserContext();
   const navigate = useNavigate();
   let location = useLocation();
@@ -25,7 +25,11 @@ const Register = () => {
       displayAlert();
       return;
     }
-    setUser(userDetails);
+    if (login) {
+      loginUser(userDetails);
+    } else {
+      setUser(userDetails);
+    }
   };
 
   const handleChange = (e) => {
