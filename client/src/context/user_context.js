@@ -15,9 +15,11 @@ import {
 } from '../actions';
 
 const user = localStorage.getItem('user');
+const token = localStorage.getItem('token');
 
 const initialState = {
   user: user ? JSON.parse(user) : null,
+  token: token || null,
   isLoading: false,
   showAlert: false,
   alertText: '',
@@ -29,12 +31,14 @@ const UserContext = React.createContext();
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const addUserToLocalStorage = (user) => {
+  const addUserToLocalStorage = ({ user, token }) => {
     localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', token);
   };
 
   const removeUserFromLocalStorage = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
   const displayAlert = () => {
@@ -58,9 +62,11 @@ const UserProvider = ({ children }) => {
     dispatch({ type: REGISTER_USER_BEGIN });
     try {
       const response = await axios.post('/api/v1/auth/register', currentUser);
-      console.log(response);
-      dispatch({ type: REGISTER_USER_SUCCESS, payload: response.data.user });
-      addUserToLocalStorage(response.data.user);
+      dispatch({
+        type: REGISTER_USER_SUCCESS,
+        payload: { user: response.data.user, token: response.data.token },
+      });
+      addUserToLocalStorage({ user: response.data.user, token });
     } catch (error) {
       console.log(error);
       dispatch({
@@ -79,9 +85,14 @@ const UserProvider = ({ children }) => {
         email,
         password,
       });
-      console.log(response);
-      dispatch({ type: LOGIN_USER_SUCCESS, payload: response.data.user });
-      addUserToLocalStorage(response.data.user);
+      dispatch({
+        type: LOGIN_USER_SUCCESS,
+        payload: { user: response.data.user, token: response.data.token },
+      });
+      addUserToLocalStorage({
+        user: response.data.user,
+        token: response.data.token,
+      });
     } catch (error) {
       console.log(error);
       dispatch({

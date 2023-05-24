@@ -21,13 +21,14 @@ const register = async (req, res, next) => {
   }
   //submit user info to database
   const user = await User.create({ name, email, password });
-  //const token = user.createJWT();
+  const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({
     user: {
       email: user.email,
       lastName: user.lastName,
       name: user.name,
     },
+    token,
   });
 };
 
@@ -47,8 +48,9 @@ const login = async (req, res) => {
   if (!isPassword) {
     throw new CustomAPIError('Invalid Credentials', StatusCodes.UNAUTHORIZED);
   }
+  const token = user.createJWT();
   user.password = undefined;
-  res.status(StatusCodes.OK).json({ user });
+  res.status(StatusCodes.OK).json({ user, token });
 };
 
 const updateUser = async (req, res) => {

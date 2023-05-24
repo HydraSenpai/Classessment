@@ -12,6 +12,7 @@ import authRouter from './routes/authRouter.js';
 import classRouter from './routes/classRouter.js';
 
 //middleware imports
+import auth from './middleware/auth.js';
 import notFoundMiddleWare from './middleware/not-found.js';
 import errorHandlerMiddleWare from './middleware/error-handler.js';
 
@@ -27,7 +28,7 @@ app.get('/api/v1', (req, res) => {
 });
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/classes', classRouter);
+app.use('/api/v1/classes', auth, classRouter);
 
 //middleware calls
 app.use(notFoundMiddleWare);

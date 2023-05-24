@@ -37,7 +37,8 @@ const user_reducer = (state, action) => {
   if (action.type === LOGIN_USER_SUCCESS) {
     return {
       ...state,
-      user: action.payload,
+      user: action.payload.user,
+      token: action.payload.token,
       isLoading: false,
       showAlert: true,
       alertType: 'success',
@@ -62,7 +63,8 @@ const user_reducer = (state, action) => {
   if (action.type === REGISTER_USER_SUCCESS) {
     return {
       ...state,
-      user: action.payload,
+      user: action.payload.user,
+      token: action.payload.token,
       isLoading: false,
       showAlert: true,
       alertType: 'success',
