@@ -22,7 +22,6 @@ const Navbar = () => {
           onClick={() => setShowLogout(!showLogout)}
         >
           <CgProfile />
-          {user.name}
         </button>
         {showLogout && (
           <button
@@ -47,7 +46,7 @@ const Wrapper = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding-left: 2em;
-  padding-right: 2em;
+  padding-right: 6em;
   h2,
   h3 {
     margin: 0px;
@@ -63,21 +62,19 @@ const Wrapper = styled.nav`
     margin: none;
     cursor: pointer;
   }
+  .logout {
+    position: relative;
+  }
   .btn-logout {
+    width: 100%;
     display: flex;
     align-items: center;
-    gap: 0.3em;
     font-size: 1.1em;
     padding: 0.5em 0.8em;
   }
-  .logout {
-    position: relative;
-    width: 8em;
-  }
   .sign-logout {
     position: absolute;
-    top: 2.4em;
-    right: 2.2em;
+    left: -60%;
     background-color: var(--primary-200);
     padding: 0.75em 1.5em;
   }
