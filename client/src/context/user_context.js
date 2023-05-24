@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import reducer from '../reducers/user_reducer';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
   SHOW_ALERT,
   CLEAR_ALERT,
-  SET_USER_SUCCESS,
-  SET_USER_ERROR,
-  SET_USER_BEGIN,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
+  LOGIN_USER_BEGIN,
 } from '../actions';
 
 const user = localStorage.getItem('user');
@@ -42,15 +44,19 @@ const UserProvider = ({ children }) => {
     }, 3000);
   };
 
-  const setUser = ({ name, email, password }) => {
-    dispatch({ type: SET_USER_BEGIN });
+  const setUser = async (currentUser) => {
+    dispatch({ type: LOGIN_USER_BEGIN });
     try {
-      const newUser = { name, email, password };
-      dispatch({ type: SET_USER_SUCCESS, payload: { name, email, password } });
-      addUserToLocalStorage(newUser);
+      const response = await axios.post('/api/v1/auth/register', currentUser);
+      console.log(response);
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: response.data.user });
+      addUserToLocalStorage(response.data.user);
     } catch (error) {
-      dispatch({ type: SET_USER_ERROR });
       console.log(error);
+      dispatch({
+        type: LOGIN_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
     }
     clearAlert();
   };

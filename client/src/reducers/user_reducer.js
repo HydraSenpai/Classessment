@@ -1,9 +1,9 @@
 import {
   SHOW_ALERT,
   CLEAR_ALERT,
-  SET_USER_SUCCESS,
-  SET_USER_ERROR,
-  SET_USER_BEGIN,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
+  LOGIN_USER_BEGIN,
 } from '../actions';
 
 const user_reducer = (state, action) => {
@@ -23,13 +23,13 @@ const user_reducer = (state, action) => {
       alertText: '',
     };
   }
-  if (action.type === SET_USER_BEGIN) {
+  if (action.type === LOGIN_USER_BEGIN) {
     return {
       ...state,
       isLoading: true,
     };
   }
-  if (action.type === SET_USER_SUCCESS) {
+  if (action.type === LOGIN_USER_SUCCESS) {
     return {
       ...state,
       user: action.payload,
@@ -39,13 +39,13 @@ const user_reducer = (state, action) => {
       alertText: 'Logged in! Redirecting...',
     };
   }
-  if (action.type === SET_USER_ERROR) {
+  if (action.type === LOGIN_USER_ERROR) {
     return {
       ...state,
       isLoading: false,
       showAlert: true,
       alertType: 'danger',
-      alertText: 'Unable to register, try again later...',
+      alertText: action.payload.msg || 'Unable to register, try again later...',
     };
   }
   throw new Error(`No Matching "${action.type}" - action type`);

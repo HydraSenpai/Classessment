@@ -25,7 +25,7 @@ const Register = () => {
       displayAlert();
       return;
     }
-    setUser({ name, email, password });
+    setUser(userDetails);
   };
 
   const handleChange = (e) => {
@@ -73,7 +73,7 @@ const Register = () => {
           value={userDetails.password}
         />
         <button type='submit' className='btn submit-btn'>
-          {login ? 'Login' : 'Register'}
+          {!isLoading ? (!login ? 'Register' : 'Login') : 'Waiting...'}
         </button>
         <p>
           {!login
@@ -85,7 +85,7 @@ const Register = () => {
             onClick={() => setLogin(!login)}
             disabled={isLoading}
           >
-            {!isLoading ? (!login ? 'Login' : 'Register') : 'Waiting...'}
+            {!login ? 'Login' : 'Register'}
           </button>
         </p>
       </form>

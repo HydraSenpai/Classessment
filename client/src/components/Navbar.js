@@ -1,16 +1,33 @@
 import { FaBars, FaX } from 'react-icons/fa';
 import styled from 'styled-components';
 import { useAppContext } from '../context/app_context';
+import { useUserContext } from '../context/user_context';
+import { useState } from 'react';
 
 const Navbar = () => {
+  const [showLogout, setShowLogout] = useState(false);
   const { toggleSidebar } = useAppContext();
+  const { user } = useUserContext();
   return (
     <Wrapper>
       <button className='toggle' onClick={toggleSidebar}>
         <FaBars className='icon' />
       </button>
       <h2>Dashboard</h2>
-      <h3>logout</h3>
+      <div className='logout'>
+        <button
+          type='button'
+          className='btn btn-logout'
+          onClick={() => setShowLogout(!showLogout)}
+        >
+          {user.name}
+        </button>
+        {showLogout && (
+          <button type='button' className='btn sign-logout'>
+            logout
+          </button>
+        )}
+      </div>
     </Wrapper>
   );
 };
@@ -39,5 +56,14 @@ const Wrapper = styled.nav`
     padding: none;
     margin: none;
     cursor: pointer;
+  }
+  .btn-logout {
+    position: relative;
+    width: 8em;
+  }
+  .sign-logout {
+    position: absolute;
+    top: 100px;
+    left: 50px;
   }
 `;
