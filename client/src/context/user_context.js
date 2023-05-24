@@ -66,7 +66,10 @@ const UserProvider = ({ children }) => {
         type: REGISTER_USER_SUCCESS,
         payload: { user: response.data.user, token: response.data.token },
       });
-      addUserToLocalStorage({ user: response.data.user, token });
+      addUserToLocalStorage({
+        user: response.data.user,
+        token: response.data.token,
+      });
     } catch (error) {
       console.log(error);
       dispatch({
