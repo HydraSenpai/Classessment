@@ -4,7 +4,9 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGIN_USER_BEGIN,
+  REMOVE_USER,
 } from '../actions';
+import { initialState } from '../context/user_context';
 
 const user_reducer = (state, action) => {
   if (action.type === SHOW_ALERT) {
@@ -46,6 +48,12 @@ const user_reducer = (state, action) => {
       showAlert: true,
       alertType: 'danger',
       alertText: action.payload.msg || 'Unable to register, try again later...',
+    };
+  }
+  if (action.type === REMOVE_USER) {
+    return {
+      ...initialState,
+      user: null,
     };
   }
   throw new Error(`No Matching "${action.type}" - action type`);

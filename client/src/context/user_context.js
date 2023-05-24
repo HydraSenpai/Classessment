@@ -8,6 +8,7 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGIN_USER_BEGIN,
+  REMOVE_USER,
 } from '../actions';
 
 const user = localStorage.getItem('user');
@@ -44,6 +45,12 @@ const UserProvider = ({ children }) => {
     }, 3000);
   };
 
+  const logoutUser = () => {
+    removeUserFromLocalStorage();
+    dispatch({ type: REMOVE_USER });
+    console.log('logout');
+  };
+
   const setUser = async (currentUser) => {
     dispatch({ type: LOGIN_USER_BEGIN });
     try {
@@ -62,7 +69,9 @@ const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ ...state, displayAlert, setUser }}>
+    <UserContext.Provider
+      value={{ ...state, displayAlert, setUser, logoutUser }}
+    >
       {children}
     </UserContext.Provider>
   );

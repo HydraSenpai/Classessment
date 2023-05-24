@@ -1,4 +1,5 @@
 import { FaBars, FaX } from 'react-icons/fa';
+import { CgProfile } from 'react-icons/cg';
 import styled from 'styled-components';
 import { useAppContext } from '../context/app_context';
 import { useUserContext } from '../context/user_context';
@@ -7,7 +8,7 @@ import { useState } from 'react';
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
   const { toggleSidebar } = useAppContext();
-  const { user } = useUserContext();
+  const { user, logoutUser } = useUserContext();
   return (
     <Wrapper>
       <button className='toggle' onClick={toggleSidebar}>
@@ -20,10 +21,15 @@ const Navbar = () => {
           className='btn btn-logout'
           onClick={() => setShowLogout(!showLogout)}
         >
+          <CgProfile />
           {user.name}
         </button>
         {showLogout && (
-          <button type='button' className='btn sign-logout'>
+          <button
+            type='button'
+            className='btn sign-logout'
+            onClick={logoutUser}
+          >
             logout
           </button>
         )}
@@ -58,12 +64,21 @@ const Wrapper = styled.nav`
     cursor: pointer;
   }
   .btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+    font-size: 1.1em;
+    padding: 0.5em 0.8em;
+  }
+  .logout {
     position: relative;
     width: 8em;
   }
   .sign-logout {
     position: absolute;
-    top: 100px;
-    left: 50px;
+    top: 2.4em;
+    right: 2.2em;
+    background-color: var(--primary-200);
+    padding: 0.75em 1.5em;
   }
 `;
