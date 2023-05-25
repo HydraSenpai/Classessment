@@ -1,6 +1,8 @@
 # Classessment
 
-Classessment is an easy to use and effective web app to track and predict class scores for any subject. Add class scores from tests to generate informative statistics and reliable score predictions. This project was built with MERN stack
+Classessment is an easy to use and effective web app to track and predict class scores for any subject. Add class scores from tests to generate informative statistics and reliable score predictions. Easy to view stats make it easy to decide what subject to focus on and achieve your best grades!
+
+This project was built with MERN stack
 
 # Features
 
