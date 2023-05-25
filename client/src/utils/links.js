@@ -4,7 +4,7 @@ import { BiUserCircle } from 'react-icons/bi';
 const links = [
   {
     id: 1,
-    name: 'Dashboard',
+    name: 'Home',
     path: '/',
     icon: <FaHome />,
   },

@@ -3,12 +3,21 @@ import { CgProfile } from 'react-icons/cg';
 import styled from 'styled-components';
 import { useAppContext } from '../context/app_context';
 import { useUserContext } from '../context/user_context';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
   const { toggleSidebar } = useAppContext();
   const { user, logoutUser } = useUserContext();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (showLogout) {
+        setShowLogout(false);
+      }
+    }, 3000);
+  }, [showLogout]);
+
   return (
     <Wrapper>
       <button className='toggle' onClick={toggleSidebar}>

@@ -34,6 +34,22 @@ const UserSchema = mongoose.Schema({
     trim: true,
     default: 'lastName',
   },
+  bio: {
+    type: String,
+    maxLength: 200,
+    trim: true,
+    default: '',
+  },
+  dob: {
+    type: Date,
+    default: '',
+  },
+  favoriteSubject: {
+    type: String,
+    maxLength: 40,
+    trim: true,
+    default: '',
+  },
 });
 
 UserSchema.pre('save', async function () {
