@@ -6,8 +6,10 @@ import Navbar from './Navbar';
 import NavLinks from './NavLinks';
 import InfoField from './InfoField';
 import InfoLabel from './InfoLabel';
+import Class from './Class';
 
 export {
+  Class,
   InfoLabel,
   InfoField,
   FormRow,

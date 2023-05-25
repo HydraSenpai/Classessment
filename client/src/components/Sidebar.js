@@ -25,7 +25,8 @@ const Wrapper = styled.div`
     transition: var(--transition);
     background-color: white;
     padding-top: 0.3em;
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
     width: 13em;
   }
   .links {

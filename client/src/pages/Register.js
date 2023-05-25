@@ -104,6 +104,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding-bottom: 0.2em;
+    gap: 1em;
   }
   h1 {
     align-self: center;
