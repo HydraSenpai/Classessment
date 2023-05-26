@@ -21,7 +21,8 @@ const getAllClasses = async (req, res) => {
 };
 
 const getClass = async (req, res) => {
-  res.send('get one class');
+  const classSingle = await Class.findById(req.params.id);
+  res.status(StatusCodes.OK).json({ classSingle });
 };
 
 const updateClass = async (req, res) => {

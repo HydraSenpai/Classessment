@@ -6,6 +6,7 @@ import {
   CREATE_CLASS_ERROR,
   CREATE_CLASS_SUCCESS,
   CREATE_CLASS_BEGIN,
+  GET_SINGLECLASS_SUCCESS,
 } from '../actions';
 
 const class_reducer = (state, action) => {
@@ -40,6 +41,10 @@ const class_reducer = (state, action) => {
       //alertType: 'danger',
       //alertText: action.payload.msg,
     };
+  }
+  if (action.type === GET_SINGLECLASS_SUCCESS) {
+    console.log(action.payload);
+    return { ...state, currentClass: action.payload };
   }
   throw new Error(`No Matching "${action.type}" - action type`);
 };

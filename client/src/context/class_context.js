@@ -11,11 +11,13 @@ import {
   CREATE_CLASS_ERROR,
   CREATE_CLASS_SUCCESS,
   CREATE_CLASS_BEGIN,
+  GET_SINGLECLASS_SUCCESS,
 } from '../actions';
 const initialState = {
   classes: [],
   totalClasses: 0,
   isLoading: false,
+  currentClass: {},
 };
 
 const ClassContext = React.createContext();
@@ -56,6 +58,18 @@ const ClassProvider = ({ children }) => {
     clearAlert();
   };
 
+  const getSingleClass = async (id) => {
+    let url = `/classes/${id}`;
+    try {
+      const { data } = await authFetch.get(url);
+      console.log(data);
+      const { classSingle } = data;
+      dispatch({ type: GET_SINGLECLASS_SUCCESS, payload: classSingle });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const createClass = async ({ name }) => {
     dispatch({ type: CREATE_CLASS_BEGIN });
     try {
@@ -74,7 +88,13 @@ const ClassProvider = ({ children }) => {
 
   return (
     <ClassContext.Provider
-      value={{ ...state, setDetails, createClass, getAllClasses }}
+      value={{
+        ...state,
+        setDetails,
+        createClass,
+        getAllClasses,
+        getSingleClass,
+      }}
     >
       {children}
     </ClassContext.Provider>

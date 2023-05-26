@@ -11,7 +11,8 @@ const initialState = {
 
 const Classes = () => {
   const [classDetails, setClassDetails] = useState(initialState);
-  const { getAllClasses, classes, createClass } = useClassContext();
+  const { getAllClasses, classes, createClass, totalClasses } =
+    useClassContext();
   const { displayAlert, showAlert } = useUserContext();
 
   const handleChange = (e) => {
@@ -50,11 +51,17 @@ const Classes = () => {
       </form>
       {/* CLASS LIST */}
       <div className='class-list'>
-        <h5 className='classes-title'>0 Classes found</h5>
+        <h5 className='classes-title'>
+          {totalClasses === 0
+            ? '0 Classes Found'
+            : totalClasses === 1
+            ? '1 Class Found'
+            : `${totalClasses} Classes Found`}
+        </h5>
         <div className='classes'>
-          {classes.map((classSingle, index) => {
-            const { name } = classSingle;
-            return <Class name={name} id={index} key={index} />;
+          {classes.map((classSingle) => {
+            const { name, _id } = classSingle;
+            return <Class name={name} id={_id} key={_id} {...classSingle} />;
           })}
         </div>
       </div>
