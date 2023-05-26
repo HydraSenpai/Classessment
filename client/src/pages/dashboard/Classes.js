@@ -1,18 +1,24 @@
 import styled from 'styled-components';
 import { useClassContext } from '../../context/class_context';
 import { FormRow, Class } from '../../components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const initialState = {
+  id: '',
   name: '',
 };
 
 const Classes = () => {
   const [classDetails, setClassDetails] = useState(initialState);
+  const { getAllClasses } = useClassContext();
 
   const handleChange = (e) => {
     setClassDetails({ ...classDetails, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    getAllClasses();
+  }, []);
 
   return (
     <Wrapper>
