@@ -4,16 +4,24 @@ import { FormRow, Class } from '../../components';
 import { useEffect, useState } from 'react';
 
 const initialState = {
-  id: '',
   name: '',
 };
 
 const Classes = () => {
   const [classDetails, setClassDetails] = useState(initialState);
-  const { getAllClasses } = useClassContext();
+  const { getAllClasses, classes, createClass } = useClassContext();
 
   const handleChange = (e) => {
     setClassDetails({ ...classDetails, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!classDetails) {
+      //show error
+      return;
+    }
+    createClass(classDetails);
   };
 
   useEffect(() => {
@@ -22,7 +30,7 @@ const Classes = () => {
 
   return (
     <Wrapper>
-      <div className='form'>
+      <form className='form' onSubmit={handleSubmit}>
         <h2 className='title'>Classes</h2>
         {/* SEARCH CONTAINER */}
         <div className='search-container'>
@@ -35,18 +43,15 @@ const Classes = () => {
           />
           <button className='btn add-btn'>Add Class</button>
         </div>
-      </div>
+      </form>
       {/* CLASS LIST */}
       <div className='class-list'>
         <h5 className='classes-title'>0 Classes found</h5>
         <div className='classes'>
-          <Class name='History' id='1' />
-          <Class name='Science' id='2' />
-          <Class name='Math' id='3' />
-          <Class name='English' id='4' />
-          <Class name='French' id='5' />
-          <Class name='German' id='6' />
-          <Class name='Physical Education' id='7' />
+          {classes.map((classSingle, index) => {
+            const { name } = classSingle;
+            return <Class name={name} id={index} key={index} />;
+          })}
         </div>
       </div>
     </Wrapper>

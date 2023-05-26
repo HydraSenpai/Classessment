@@ -6,7 +6,7 @@ const Class = ({ name, id }) => {
     <Wrapper>
       <div className='class'>
         <h3>{name}</h3>
-        <p>Current Score: {Math.round(Math.random() * 100)}%</p>
+        <p>Current Score: 50%</p>
         <div className='buttons'>
           <Link to={`/class/${id}`} className='btn btn-main'>
             Edit/Stats

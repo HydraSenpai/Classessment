@@ -108,7 +108,14 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ ...state, displayAlert, setUser, logoutUser, loginUser }}
+      value={{
+        ...state,
+        displayAlert,
+        setUser,
+        logoutUser,
+        loginUser,
+        clearAlert,
+      }}
     >
       {children}
     </UserContext.Provider>
