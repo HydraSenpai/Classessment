@@ -2,7 +2,7 @@ import CustomAPIError from '../errors/customAPIError.js';
 import { StatusCodes } from 'http-status-codes';
 import User from '../models/User.js';
 
-const register = async (req, res, next) => {
+const register = async (req, res) => {
   const { name, email, password } = req.body;
   //check if any fields are missing at server
   if (!name || !email || !password) {

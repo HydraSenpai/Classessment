@@ -3,11 +3,21 @@ import { StatusCodes } from 'http-status-codes';
 import CustomAPIError from '../errors/customAPIError.js';
 
 const createClass = async (req, res) => {
-  res.send('create class');
+  const { name, currentScore } = req.body;
+  if (!name) {
+    throw CustomAPIError(
+      'Please provide a class name',
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  req.body.createdBy = req.user.userId;
+  const classNew = await Class.create(req.body);
+  res.status(StatusCodes.CREATED).json({ classNew });
 };
 
 const getAllClasses = async (req, res) => {
-  res.send('get all classes');
+  const classes = await Class.find({ createdBy: req.user.userId });
+  res.status(StatusCodes.OK).json({ classes, totalClasses: classes.length });
 };
 
 const getClass = async (req, res) => {
