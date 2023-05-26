@@ -34,13 +34,13 @@ const Classes = () => {
       <div className='class-list'>
         <h5 className='classes-title'>0 Classes found</h5>
         <div className='classes'>
-          <Class name='History' />
-          <Class name='Science' />
-          <Class name='Math' />
-          <Class name='English' />
-          <Class name='French' />
-          <Class name='German' />
-          <Class name='Physical Education' />
+          <Class name='History' id='1' />
+          <Class name='Science' id='2' />
+          <Class name='Math' id='3' />
+          <Class name='English' id='4' />
+          <Class name='French' id='5' />
+          <Class name='German' id='6' />
+          <Class name='Physical Education' id='7' />
         </div>
       </div>
     </Wrapper>

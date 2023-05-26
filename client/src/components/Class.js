@@ -1,13 +1,16 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-const Class = ({ name }) => {
+const Class = ({ name, id }) => {
   return (
     <Wrapper>
       <div className='class'>
         <h3>{name}</h3>
         <p>Current Score: {Math.round(Math.random() * 100)}%</p>
         <div className='buttons'>
-          <button className='btn btn-main'>Edit/Stats</button>
+          <Link to={`/class/${id}`} className='btn btn-main'>
+            Edit/Stats
+          </Link>
         </div>
       </div>
     </Wrapper>
