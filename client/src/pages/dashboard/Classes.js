@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { useClassContext } from '../../context/class_context';
-import { FormRow, Class } from '../../components';
+
+import { FormRow, Class, Alert } from '../../components';
 import { useEffect, useState } from 'react';
+import { useUserContext } from '../../context/user_context';
 
 const initialState = {
   name: '',
@@ -10,6 +12,7 @@ const initialState = {
 const Classes = () => {
   const [classDetails, setClassDetails] = useState(initialState);
   const { getAllClasses, classes, createClass } = useClassContext();
+  const { displayAlert, showAlert } = useUserContext();
 
   const handleChange = (e) => {
     setClassDetails({ ...classDetails, [e.target.name]: e.target.value });
@@ -17,8 +20,8 @@ const Classes = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!classDetails) {
-      //show error
+    if (!classDetails || !classDetails.name) {
+      displayAlert();
       return;
     }
     createClass(classDetails);
@@ -31,7 +34,8 @@ const Classes = () => {
   return (
     <Wrapper>
       <form className='form' onSubmit={handleSubmit}>
-        <h2 className='title'>Classes</h2>
+        <h2 className={showAlert ? 'title title-margin' : 'title'}>Classes</h2>
+        <Alert />
         {/* SEARCH CONTAINER */}
         <div className='search-container'>
           <FormRow
@@ -66,6 +70,9 @@ const Wrapper = styled.div`
   align-items: center;
   .form {
     max-width: 60vw;
+  }
+  .title-margin {
+    margin-bottom: 0.5em;
   }
   .search-container {
     display: grid;

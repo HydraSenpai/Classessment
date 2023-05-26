@@ -5,7 +5,7 @@ import CustomAPIError from '../errors/customAPIError.js';
 const createClass = async (req, res) => {
   const { name, currentScore } = req.body;
   if (!name) {
-    throw CustomAPIError(
+    throw new CustomAPIError(
       'Please provide a class name',
       StatusCodes.BAD_REQUEST
     );
