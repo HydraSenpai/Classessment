@@ -1,12 +1,13 @@
 import {
   HANDLE_CHANGE,
-  GET_CLASS_ERROR,
   GET_CLASS_SUCCESS,
   GET_CLASS_BEGIN,
   CREATE_CLASS_ERROR,
   CREATE_CLASS_SUCCESS,
   CREATE_CLASS_BEGIN,
   GET_SINGLECLASS_SUCCESS,
+  GET_SINGLECLASS_BEGIN,
+  GET_SINGLECLASS_ERROR,
 } from '../actions';
 
 const class_reducer = (state, action) => {
@@ -44,7 +45,19 @@ const class_reducer = (state, action) => {
   }
   if (action.type === GET_SINGLECLASS_SUCCESS) {
     console.log(action.payload);
-    return { ...state, currentClass: action.payload };
+    return { ...state, currentClass: action.payload, isLoading: false };
+  }
+  if (action.type === GET_SINGLECLASS_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === GET_SINGLECLASS_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      //showAlert: true,
+      //alertType: 'danger',
+      //alertText: action.payload.msg,
+    };
   }
   throw new Error(`No Matching "${action.type}" - action type`);
 };

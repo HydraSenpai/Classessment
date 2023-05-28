@@ -12,11 +12,13 @@ import {
   CREATE_CLASS_SUCCESS,
   CREATE_CLASS_BEGIN,
   GET_SINGLECLASS_SUCCESS,
+  GET_SINGLECLASS_BEGIN,
+  GET_SINGLECLASS_ERROR,
 } from '../actions';
 const initialState = {
   classes: [],
   totalClasses: 0,
-  isLoading: false,
+  isLoading: true,
   currentClass: {},
 };
 
@@ -59,6 +61,7 @@ const ClassProvider = ({ children }) => {
   };
 
   const getSingleClass = async (id) => {
+    dispatch({ type: GET_SINGLECLASS_BEGIN });
     let url = `/classes/${id}`;
     try {
       const { data } = await authFetch.get(url);
@@ -66,6 +69,7 @@ const ClassProvider = ({ children }) => {
       const { classSingle } = data;
       dispatch({ type: GET_SINGLECLASS_SUCCESS, payload: classSingle });
     } catch (error) {
+      dispatch({ type: GET_SINGLECLASS_ERROR });
       console.log(error);
     }
   };

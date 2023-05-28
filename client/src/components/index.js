@@ -7,6 +7,7 @@ import NavLinks from './NavLinks';
 import InfoField from './InfoField';
 import InfoLabel from './InfoLabel';
 import Class from './Class';
+import Loading from './Loading';
 
 export {
   Class,
@@ -18,4 +19,5 @@ export {
   Sidebar,
   Navbar,
   NavLinks,
+  Loading,
 };

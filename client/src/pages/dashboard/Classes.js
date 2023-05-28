@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useClassContext } from '../../context/class_context';
 
-import { FormRow, Class, Alert } from '../../components';
+import { FormRow, Class, Alert, Loading } from '../../components';
 import { useEffect, useState } from 'react';
 import { useUserContext } from '../../context/user_context';
 
@@ -11,7 +11,7 @@ const initialState = {
 
 const Classes = () => {
   const [classDetails, setClassDetails] = useState(initialState);
-  const { getAllClasses, classes, createClass, totalClasses } =
+  const { getAllClasses, classes, createClass, totalClasses, isLoading } =
     useClassContext();
   const { displayAlert, showAlert } = useUserContext();
 
@@ -50,21 +50,25 @@ const Classes = () => {
         </div>
       </form>
       {/* CLASS LIST */}
-      <div className='class-list'>
-        <h5 className='classes-title'>
-          {totalClasses === 0
-            ? '0 Classes Found'
-            : totalClasses === 1
-            ? '1 Class Found'
-            : `${totalClasses} Classes Found`}
-        </h5>
-        <div className='classes'>
-          {classes.map((classSingle) => {
-            const { name, _id } = classSingle;
-            return <Class name={name} id={_id} key={_id} {...classSingle} />;
-          })}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className='class-list'>
+          <h5 className='classes-title'>
+            {totalClasses === 0
+              ? '0 Classes Found'
+              : totalClasses === 1
+              ? '1 Class Found'
+              : `${totalClasses} Classes Found`}
+          </h5>
+          <div className='classes'>
+            {classes.map((classSingle) => {
+              const { name, _id } = classSingle;
+              return <Class name={name} id={_id} key={_id} {...classSingle} />;
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </Wrapper>
   );
 };
