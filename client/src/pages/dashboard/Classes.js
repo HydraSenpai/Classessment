@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useClassContext } from '../../context/class_context';
-
 import { FormRow, Class, Alert, Loading } from '../../components';
 import { useEffect, useState } from 'react';
 import { useUserContext } from '../../context/user_context';
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   name: '',
@@ -11,9 +11,17 @@ const initialState = {
 
 const Classes = () => {
   const [classDetails, setClassDetails] = useState(initialState);
-  const { getAllClasses, classes, createClass, totalClasses, isLoading } =
-    useClassContext();
+  const {
+    getAllClasses,
+    classes,
+    createClass,
+    totalClasses,
+    isLoading,
+    resetClassesSearch,
+    createdClass,
+  } = useClassContext();
   const { displayAlert, showAlert } = useUserContext();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setClassDetails({ ...classDetails, [e.target.name]: e.target.value });
@@ -31,6 +39,17 @@ const Classes = () => {
   useEffect(() => {
     getAllClasses();
   }, []);
+
+  useEffect(() => {
+    if (createdClass) {
+      const newClass = classes.find(
+        (classSingle) => classDetails.name === classSingle.name
+      );
+      navigate(`/class/${newClass._id}`);
+      setClassDetails(initialState);
+      resetClassesSearch();
+    }
+  }, [createdClass]);
 
   return (
     <Wrapper>

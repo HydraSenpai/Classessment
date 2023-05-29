@@ -9,6 +9,9 @@ import {
   GET_SINGLECLASS_BEGIN,
   GET_SINGLECLASS_ERROR,
   CHANGE_CLASS_OPTION,
+  CREATED_NEW_CLASS,
+  CREATED_NEW_CLASS_PROCESSED,
+  CREATE_EXISTING_CLASS_ERROR,
 } from '../actions';
 
 const class_reducer = (state, action) => {
@@ -39,9 +42,9 @@ const class_reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      //showAlert: true,
-      //alertType: 'danger',
-      //alertText: action.payload.msg,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.payload.msg,
     };
   }
   if (action.type === GET_SINGLECLASS_SUCCESS) {
@@ -63,6 +66,20 @@ const class_reducer = (state, action) => {
   if (action.type === CHANGE_CLASS_OPTION) {
     return { ...state, classOption: action.payload };
   }
+  if (action.type === CREATED_NEW_CLASS) {
+    return { ...state, createdClass: true };
+  }
+  if (action.type === CREATED_NEW_CLASS_PROCESSED) {
+    return { ...state, createdClass: false };
+  }
+  if (action.type === CREATE_EXISTING_CLASS_ERROR)
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: 'Class name already exists',
+    };
   throw new Error(`No Matching "${action.type}" - action type`);
 };
 

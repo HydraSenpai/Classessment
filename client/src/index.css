@@ -206,8 +206,8 @@ ul {
 /* form */
 
 .form {
-  width: 90vw;
-  max-width: var(--fixed-width);
+  width: 60vw;
+
   background: var(--white);
   border-radius: var(--borderRadius);
   box-shadow: var(--shadow-2);

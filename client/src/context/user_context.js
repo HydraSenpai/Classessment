@@ -12,6 +12,7 @@ import {
   REGISTER_USER_BEGIN,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_ERROR,
+  SHOW_CUSTOM_ALERT,
 } from '../actions';
 
 const user = localStorage.getItem('user');
@@ -43,6 +44,11 @@ const UserProvider = ({ children }) => {
 
   const displayAlert = () => {
     dispatch({ type: SHOW_ALERT });
+    clearAlert();
+  };
+
+  const displayCustomAlert = (type, message) => {
+    dispatch({ type: SHOW_CUSTOM_ALERT, payload: { type, message } });
     clearAlert();
   };
 
@@ -115,6 +121,7 @@ const UserProvider = ({ children }) => {
         logoutUser,
         loginUser,
         clearAlert,
+        displayCustomAlert,
       }}
     >
       {children}

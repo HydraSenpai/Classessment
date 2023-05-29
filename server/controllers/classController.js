@@ -10,6 +10,16 @@ const createClass = async (req, res) => {
       StatusCodes.BAD_REQUEST
     );
   }
+  const classExists = await Class.findOne({
+    createdBy: req.user.userId,
+    name,
+  });
+  if (classExists) {
+    throw new CustomAPIError(
+      'This class name already exists',
+      StatusCodes.BAD_REQUEST
+    );
+  }
   req.body.createdBy = req.user.userId;
   const classNew = await Class.create(req.body);
   res.status(StatusCodes.CREATED).json({ classNew });

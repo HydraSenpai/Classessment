@@ -15,20 +15,28 @@ import {
   GET_SINGLECLASS_BEGIN,
   GET_SINGLECLASS_ERROR,
   CHANGE_CLASS_OPTION,
+  CREATED_NEW_CLASS,
+  CREATED_NEW_CLASS_PROCESSED,
+  CREATE_EXISTING_CLASS_ERROR,
 } from '../actions';
 const initialState = {
   classes: [],
   totalClasses: 0,
   isLoading: true,
   currentClass: {},
-  classOption: 'add',
+  classOption: 'view',
+  createdClass: false,
+  showAlert: false,
+  alertType: '',
+  alertText: '',
 };
 
 const ClassContext = React.createContext();
 
 const ClassProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { token, logoutUser, clearAlert } = useUserContext();
+  const { token, logoutUser, clearAlert, displayCustomAlert } =
+    useUserContext();
 
   const authFetch = axios.create({
     baseURL: '/api/v1',
@@ -81,15 +89,21 @@ const ClassProvider = ({ children }) => {
     try {
       await authFetch.post('/classes', { name });
       dispatch({ type: CREATE_CLASS_SUCCESS });
-      getAllClasses();
+      await getAllClasses();
+      dispatch({ type: CREATED_NEW_CLASS });
     } catch (error) {
       if (error.response.status === 401) return;
       dispatch({
         type: CREATE_CLASS_ERROR,
         payload: { msg: error.response.data.msg },
       });
+      displayCustomAlert('danger', 'class name already exists');
     }
     clearAlert();
+  };
+
+  const resetClassesSearch = () => {
+    dispatch({ type: CREATED_NEW_CLASS_PROCESSED });
   };
 
   const changeClassOption = (option) => {
@@ -105,6 +119,7 @@ const ClassProvider = ({ children }) => {
         getAllClasses,
         getSingleClass,
         changeClassOption,
+        resetClassesSearch,
       }}
     >
       {children}

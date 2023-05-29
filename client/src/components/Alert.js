@@ -1,3 +1,4 @@
+import { useClassContext } from '../context/class_context';
 import { useUserContext } from '../context/user_context';
 
 const Alert = () => {

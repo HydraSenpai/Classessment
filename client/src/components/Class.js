@@ -37,6 +37,7 @@ const Wrapper = styled.div`
   p {
     margin: 0;
     padding: 0;
+    text-transform: none;
   }
   .class:hover {
     box-shadow: var(--shadow-4);

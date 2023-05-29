@@ -8,6 +8,7 @@ import {
   REGISTER_USER_BEGIN,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_ERROR,
+  SHOW_CUSTOM_ALERT,
 } from '../actions';
 import { initialState } from '../context/user_context';
 
@@ -18,6 +19,14 @@ const user_reducer = (state, action) => {
       showAlert: true,
       alertType: 'danger',
       alertText: 'Please provide all values',
+    };
+  }
+  if (action.type === SHOW_CUSTOM_ALERT) {
+    return {
+      ...state,
+      showAlert: true,
+      alertType: action.payload.type,
+      alertText: action.payload.message,
     };
   }
   if (action.type === CLEAR_ALERT) {
