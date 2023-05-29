@@ -103,6 +103,27 @@ const ClassProvider = ({ children }) => {
     clearAlert();
   };
 
+  // NEED TO ADD REDUCER OPTIONS AND WILL BE FINISHED
+  const addScore = async ({ name, score }) => {
+    dispatch({ type: CREATE_CLASS_BEGIN });
+    try {
+      await authFetch.patch(`/classes/${state.currentClass._id}`, {
+        name,
+        score,
+      });
+      dispatch({ type: CREATE_CLASS_SUCCESS });
+      await getAllClasses();
+      dispatch({ type: CREATED_NEW_CLASS });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: CREATE_CLASS_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   const deleteClass = async () => {
     dispatch({ type: DELETE_CLASS_BEGIN });
     try {
@@ -142,6 +163,7 @@ const ClassProvider = ({ children }) => {
         resetClassesSearch,
         deleteClass,
         resetDeletedList,
+        addScore,
       }}
     >
       {children}
