@@ -2,7 +2,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useClassContext } from '../../context/class_context';
 import { useEffect, useState } from 'react';
-import { Loading } from '../../components';
+import { FormRow, Loading } from '../../components';
 import { MdDeleteForever } from 'react-icons/md';
 import { IoChevronBack } from 'react-icons/io5';
 import { useUserContext } from '../../context/user_context';
@@ -76,15 +76,21 @@ const Class = () => {
         </div>
       </div>
       {/* SECTION CONTAINER */}
-      <div className='section'>
-        {classOption === 'view' && (
-          <h1 className='title section-title'>view</h1>
-        )}
-        {classOption === 'add' && <h1 className='title section-title'>add</h1>}
-        {classOption === 'edit' && (
-          <h1 className='title section-title'>edit</h1>
-        )}
-      </div>
+      {classOption === 'view' && <h1 className='title section-title'>view</h1>}
+      {classOption === 'add' && (
+        <div className='section' onSubmit={(e) => e.preventDefault()}>
+          <h2 className='title section-title'>Add Grade</h2>
+          <form className='form-add'>
+            <FormRow labelText='Test Name' />
+            <FormRow labelText='Percentage' />
+
+            <button type='submit' className='btn submit-btn'>
+              Submit Grade
+            </button>
+          </form>
+        </div>
+      )}
+      {classOption === 'edit' && <h1 className='title section-title'>edit</h1>}
     </Wrapper>
   );
 };
@@ -136,7 +142,7 @@ const Wrapper = styled.div`
     background-color: var(--red-dark);
   }
   .title {
-    padding: 0 1.5em;
+    padding: 0 1em;
     margin-bottom: 0;
   }
   .loading-page {
@@ -187,14 +193,29 @@ const Wrapper = styled.div`
     font-size: 1.4em;
   }
   .section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 60vw;
-    height: 10em;
+    padding-bottom: 3em;
     background: var(--white);
     border-radius: var(--borderRadius);
     box-shadow: var(--shadow-2);
-    margin: 1em auto;
+    margin: 1em auto 5em auto;
   }
   .section-title {
-    padding-top: 0.3em;
+    padding-top: 0.4em;
+  }
+  .form-add {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+    gap: 0.8em;
+    width: 50%;
+  }
+  .submit-btn {
+    width: 30%;
+    height: 2.2em;
+    margin-top: 0.5em;
   }
 `;
