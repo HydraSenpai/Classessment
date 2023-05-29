@@ -7,8 +7,14 @@ import { MdDeleteForever } from 'react-icons/md';
 import { IoChevronBack } from 'react-icons/io5';
 import { useUserContext } from '../../context/user_context';
 
+const initialState = {
+  name: '',
+  score: null,
+};
+
 const Class = () => {
   const [classSingle, setClassSingle] = useState({});
+  const [classValues, setClassValues] = useState(initialState);
   const { id } = useParams();
   const {
     getSingleClass,
@@ -19,8 +25,23 @@ const Class = () => {
     deleteClass,
     deletedClass,
     resetDeletedList,
+    addScore,
   } = useClassContext();
+  const { displayAlert, showAlert } = useUserContext();
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setClassValues({ ...classValues, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!classValues.name || !classValues.score) {
+      displayAlert();
+      return;
+    }
+    addScore(classValues);
+  };
 
   useEffect(() => {
     getSingleClass(id);
@@ -80,9 +101,21 @@ const Class = () => {
       {classOption === 'add' && (
         <div className='section' onSubmit={(e) => e.preventDefault()}>
           <h2 className='title section-title'>Add Grade</h2>
-          <form className='form-add'>
-            <FormRow labelText='Test Name' />
-            <FormRow labelText='Percentage' />
+          <form className='form-add' onSubmit={handleSubmit}>
+            <FormRow
+              labelText='Test Name'
+              type='text'
+              name='name'
+              value={classValues.name}
+              handleChange={handleChange}
+            />
+            <FormRow
+              labelText='Percentage'
+              type='number'
+              name='score'
+              value={classValues.score}
+              handleChange={handleChange}
+            />
 
             <button type='submit' className='btn submit-btn'>
               Submit Grade

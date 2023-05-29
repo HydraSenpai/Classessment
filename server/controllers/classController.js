@@ -35,8 +35,26 @@ const getClass = async (req, res) => {
   res.status(StatusCodes.OK).json({ classSingle });
 };
 
-const updateClass = async (req, res) => {
-  res.send('update class');
+const addStat = async (req, res) => {
+  const targetClass = await Class.findById(req.params.id);
+  if (!targetClass) {
+    throw new CustomAPIError(
+      `No job with id ${req.params.id}`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  const currentTests = targetClass.tests;
+  console.log(currentTests);
+  currentTests.push({ name: req.body.name, score: req.body.score });
+  console.log(currentTests);
+  const updatedClass = await Class.findByIdAndUpdate(
+    { _id: req.params.id },
+    { tests: currentTests },
+    { new: true }
+  );
+  res
+    .status(StatusCodes.OK)
+    .json({ updatedClass, numOfTestsData: updatedClass.tests.length });
 };
 
 const deleteClass = async (req, res) => {
@@ -54,4 +72,15 @@ const deleteClass = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Success! Job deleted' });
 };
 
-export { createClass, getAllClasses, getClass, updateClass, deleteClass };
+const updateClass = (req, res) => {
+  res.send('update class');
+};
+
+export {
+  createClass,
+  getAllClasses,
+  getClass,
+  updateClass,
+  deleteClass,
+  addStat,
+};

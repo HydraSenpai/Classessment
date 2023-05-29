@@ -11,6 +11,11 @@ const ClassSchema = mongoose.Schema({
   currentScore: {
     type: Number,
   },
+  tests: {
+    type: Array,
+    required: [true, 'Please provide empty test or test data'],
+    default: [],
+  },
   createdBy: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
