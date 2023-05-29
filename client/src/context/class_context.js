@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useReducer } from 'react';
 import reducer from '../reducers/class_reducer';
 import axios from 'axios';
 import { useUserContext } from './user_context';
 
 import {
   HANDLE_CHANGE,
-  GET_CLASS_ERROR,
   GET_CLASS_SUCCESS,
   GET_CLASS_BEGIN,
   CREATE_CLASS_ERROR,
@@ -17,7 +16,11 @@ import {
   CHANGE_CLASS_OPTION,
   CREATED_NEW_CLASS,
   CREATED_NEW_CLASS_PROCESSED,
-  CREATE_EXISTING_CLASS_ERROR,
+  DELETE_CLASS_SUCCESS,
+  DELETE_CLASS_BEGIN,
+  DELETE_CLASS_ERROR,
+  DELETED_NEW_CLASS,
+  DELETED_NEW_CLASS_PROCESSED,
 } from '../actions';
 const initialState = {
   classes: [],
@@ -26,6 +29,7 @@ const initialState = {
   currentClass: {},
   classOption: 'view',
   createdClass: false,
+  deletedClass: false,
   showAlert: false,
   alertType: '',
   alertText: '',
@@ -64,7 +68,6 @@ const ClassProvider = ({ children }) => {
       });
       console.log(classes);
     } catch (error) {
-      console.log(error.response);
       logoutUser();
     }
     clearAlert();
@@ -75,7 +78,6 @@ const ClassProvider = ({ children }) => {
     let url = `/classes/${id}`;
     try {
       const { data } = await authFetch.get(url);
-      console.log(data);
       const { classSingle } = data;
       dispatch({ type: GET_SINGLECLASS_SUCCESS, payload: classSingle });
     } catch (error) {
@@ -102,8 +104,27 @@ const ClassProvider = ({ children }) => {
     clearAlert();
   };
 
+  const deleteClass = async () => {
+    dispatch({ type: DELETE_CLASS_BEGIN });
+    try {
+      await authFetch.delete(`/classes/${state.currentClass._id}`);
+      dispatch({ type: DELETE_CLASS_SUCCESS });
+      await getAllClasses();
+      dispatch({ type: DELETED_NEW_CLASS });
+      displayCustomAlert('success', 'Success! Deleted class...');
+    } catch (error) {
+      dispatch({ type: DELETE_CLASS_ERROR });
+      displayCustomAlert('danger', 'Error! Could not delete class');
+    }
+    setTimeout(() => clearAlert(), 2000);
+  };
+
   const resetClassesSearch = () => {
     dispatch({ type: CREATED_NEW_CLASS_PROCESSED });
+  };
+
+  const resetDeletedList = () => {
+    dispatch({ type: DELETED_NEW_CLASS_PROCESSED });
   };
 
   const changeClassOption = (option) => {
@@ -120,6 +141,8 @@ const ClassProvider = ({ children }) => {
         getSingleClass,
         changeClassOption,
         resetClassesSearch,
+        deleteClass,
+        resetDeletedList,
       }}
     >
       {children}

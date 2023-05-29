@@ -12,6 +12,11 @@ import {
   CREATED_NEW_CLASS,
   CREATED_NEW_CLASS_PROCESSED,
   CREATE_EXISTING_CLASS_ERROR,
+  DELETE_CLASS_SUCCESS,
+  DELETE_CLASS_BEGIN,
+  DELETE_CLASS_ERROR,
+  DELETED_NEW_CLASS,
+  DELETED_NEW_CLASS_PROCESSED,
 } from '../actions';
 
 const class_reducer = (state, action) => {
@@ -48,7 +53,6 @@ const class_reducer = (state, action) => {
     };
   }
   if (action.type === GET_SINGLECLASS_SUCCESS) {
-    console.log(action.payload);
     return { ...state, currentClass: action.payload, isLoading: false };
   }
   if (action.type === GET_SINGLECLASS_BEGIN) {
@@ -80,6 +84,33 @@ const class_reducer = (state, action) => {
       alertType: 'danger',
       alertText: 'Class name already exists',
     };
+  if (action.type === DELETE_CLASS_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === DELETE_CLASS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'Class deleted...',
+    };
+  }
+  if (action.type === DELETE_CLASS_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: 'Could not delete class...',
+    };
+  }
+  if (action.type === DELETED_NEW_CLASS) {
+    return { ...state, deletedClass: true };
+  }
+  if (action.type === DELETED_NEW_CLASS_PROCESSED) {
+    return { ...state, deletedClass: false };
+  }
   throw new Error(`No Matching "${action.type}" - action type`);
 };
 

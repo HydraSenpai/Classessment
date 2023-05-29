@@ -40,7 +40,17 @@ const updateClass = async (req, res) => {
 };
 
 const deleteClass = async (req, res) => {
-  res.send('delete class');
+  const deletedClass = await Class.findOneAndDelete({
+    _id: req.params.id,
+  });
+  if (!deletedClass) {
+    throw new CustomAPIError(
+      `No job with id ${req.params.id}`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  console.log(deletedClass);
+  res.status(StatusCodes.OK).json({ msg: 'Success! Job deleted' });
 };
 
 export { createClass, getAllClasses, getClass, updateClass, deleteClass };

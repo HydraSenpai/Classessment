@@ -71,6 +71,8 @@ const Classes = () => {
       {/* CLASS LIST */}
       {isLoading ? (
         <Loading />
+      ) : classes.length === 0 ? (
+        <h3 className='title'>No Classes Being Tracked</h3>
       ) : (
         <div className='class-list'>
           <h5 className='classes-title'>

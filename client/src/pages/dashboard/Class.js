@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Loading } from '../../components';
 import { MdDeleteForever } from 'react-icons/md';
 import { IoChevronBack } from 'react-icons/io5';
+import { useUserContext } from '../../context/user_context';
 
 const Class = () => {
   const [classSingle, setClassSingle] = useState({});
@@ -15,11 +16,22 @@ const Class = () => {
     isLoading,
     classOption,
     changeClassOption,
+    deleteClass,
+    deletedClass,
+    resetDeletedList,
   } = useClassContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getSingleClass(id);
   }, []);
+
+  useEffect(() => {
+    if (deletedClass) {
+      navigate(`/classes`);
+      resetDeletedList();
+    }
+  }, [deletedClass]);
 
   if (isLoading) {
     return (
@@ -38,9 +50,9 @@ const Class = () => {
         <Link to='/classes' className='back'>
           <IoChevronBack />
         </Link>
-        <Link className='delete'>
+        <div className='delete' onClick={deleteClass}>
           <MdDeleteForever />
-        </Link>
+        </div>
       </div>
       {/* BUTTONS CONTAINER */}
       <div className='options-container'>
@@ -95,14 +107,14 @@ const Wrapper = styled.div`
     position: absolute;
     top: 1.5em;
     left: 1.5em;
-    background-color: var(--grey-100);
+    background-color: var(--grey-200);
     border-radius: var(--borderRadius);
     box-shadow: var(--shadow-2);
     transition: var(--transition);
     color: var(--black);
   }
   .back:hover {
-    background-color: var(--grey-300);
+    background-color: var(--grey-500);
   }
   .delete {
     display: flex;
