@@ -14,12 +14,14 @@ import {
   GET_SINGLECLASS_SUCCESS,
   GET_SINGLECLASS_BEGIN,
   GET_SINGLECLASS_ERROR,
+  CHANGE_CLASS_OPTION,
 } from '../actions';
 const initialState = {
   classes: [],
   totalClasses: 0,
   isLoading: true,
   currentClass: {},
+  classOption: 'add',
 };
 
 const ClassContext = React.createContext();
@@ -90,6 +92,10 @@ const ClassProvider = ({ children }) => {
     clearAlert();
   };
 
+  const changeClassOption = (option) => {
+    dispatch({ type: CHANGE_CLASS_OPTION, payload: option });
+  };
+
   return (
     <ClassContext.Provider
       value={{
@@ -98,6 +104,7 @@ const ClassProvider = ({ children }) => {
         createClass,
         getAllClasses,
         getSingleClass,
+        changeClassOption,
       }}
     >
       {children}

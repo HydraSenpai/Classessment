@@ -38,10 +38,10 @@ html {
   /* rest of the colors */
   --black: #222;
   --white: #fff;
-  --red-light: #f8d7da;
-  --red-dark: #842029;
-  --green-light: #d1e7dd;
-  --green-dark: #0f5132;
+  --red-light: #fa6a76;
+  --red-dark: #8f222b;
+  --green-light: #afeacf;
+  --green-dark: #197248;
 
   /* fonts  */
   --headingFont: 'Roboto Condensed', Sans-Serif;

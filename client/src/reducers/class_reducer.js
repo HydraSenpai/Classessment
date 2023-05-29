@@ -8,6 +8,7 @@ import {
   GET_SINGLECLASS_SUCCESS,
   GET_SINGLECLASS_BEGIN,
   GET_SINGLECLASS_ERROR,
+  CHANGE_CLASS_OPTION,
 } from '../actions';
 
 const class_reducer = (state, action) => {
@@ -58,6 +59,9 @@ const class_reducer = (state, action) => {
       //alertType: 'danger',
       //alertText: action.payload.msg,
     };
+  }
+  if (action.type === CHANGE_CLASS_OPTION) {
+    return { ...state, classOption: action.payload };
   }
   throw new Error(`No Matching "${action.type}" - action type`);
 };
