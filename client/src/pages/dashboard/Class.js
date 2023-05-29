@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useClassContext } from '../../context/class_context';
 import { useEffect, useState } from 'react';
@@ -35,12 +35,12 @@ const Class = () => {
       {/* HEADING CONTAINER */}
       <div className='form'>
         <h1 className='title'>{currentClass.name}</h1>
-        <div className='back'>
+        <Link to='/classes' className='back'>
           <IoChevronBack />
-        </div>
-        <div className='delete'>
+        </Link>
+        <Link className='delete'>
           <MdDeleteForever />
-        </div>
+        </Link>
       </div>
       {/* BUTTONS CONTAINER */}
       <div className='options-container'>
@@ -99,6 +99,7 @@ const Wrapper = styled.div`
     border-radius: var(--borderRadius);
     box-shadow: var(--shadow-2);
     transition: var(--transition);
+    color: var(--black);
   }
   .back:hover {
     background-color: var(--grey-300);
@@ -117,6 +118,7 @@ const Wrapper = styled.div`
     border-radius: var(--borderRadius);
     box-shadow: var(--shadow-2);
     transition: var(--transition);
+    color: var(--black);
   }
   .delete:hover {
     background-color: var(--red-dark);
