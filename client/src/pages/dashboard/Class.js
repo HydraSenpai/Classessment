@@ -136,6 +136,7 @@ const Wrapper = styled.div`
     background-color: var(--red-dark);
   }
   .title {
+    padding: 0 1.5em;
     margin-bottom: 0;
   }
   .loading-page {

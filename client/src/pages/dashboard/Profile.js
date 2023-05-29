@@ -26,7 +26,7 @@ const Profile = () => {
               <>
                 <InfoLabel key={uuidv4()} text={dataItem} />
                 <InfoField key={uuidv4()} value={fields[dataItem]} />
-                <button type='button' className='btn edit-btn'>
+                <button key={uuidv4()} type='button' className='btn edit-btn'>
                   Edit
                 </button>
               </>

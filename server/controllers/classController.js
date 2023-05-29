@@ -42,6 +42,7 @@ const updateClass = async (req, res) => {
 const deleteClass = async (req, res) => {
   const deletedClass = await Class.findOneAndDelete({
     _id: req.params.id,
+    createdBy: req.user.userId,
   });
   if (!deletedClass) {
     throw new CustomAPIError(

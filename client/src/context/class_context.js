@@ -66,7 +66,6 @@ const ClassProvider = ({ children }) => {
           totalClasses,
         },
       });
-      console.log(classes);
     } catch (error) {
       logoutUser();
     }
@@ -116,7 +115,7 @@ const ClassProvider = ({ children }) => {
       dispatch({ type: DELETE_CLASS_ERROR });
       displayCustomAlert('danger', 'Error! Could not delete class');
     }
-    setTimeout(() => clearAlert(), 2000);
+    setTimeout(() => clearAlert(), 4000);
   };
 
   const resetClassesSearch = () => {
