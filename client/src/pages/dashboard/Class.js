@@ -2,7 +2,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useClassContext } from '../../context/class_context';
 import { useEffect, useState } from 'react';
-import { FormRow, Loading } from '../../components';
+import { FormRow, Loading, TestScores } from '../../components';
 import { MdDeleteForever } from 'react-icons/md';
 import { IoChevronBack } from 'react-icons/io5';
 import { useUserContext } from '../../context/user_context';
@@ -97,9 +97,16 @@ const Class = () => {
         </div>
       </div>
       {/* SECTION CONTAINER */}
-      {classOption === 'view' && <h1 className='title section-title'>view</h1>}
+      {classOption === 'view' && (
+        <div className='section'>
+          <h2 className='title section-title' style={{ marginBottom: '0.5em' }}>
+            View Grades
+          </h2>
+          <TestScores tests={currentClass.tests} />
+        </div>
+      )}
       {classOption === 'add' && (
-        <div className='section' onSubmit={(e) => e.preventDefault()}>
+        <div className='section'>
           <h2 className='title section-title'>Add Grade</h2>
           <form className='form-add' onSubmit={handleSubmit}>
             <FormRow
@@ -123,7 +130,11 @@ const Class = () => {
           </form>
         </div>
       )}
-      {classOption === 'edit' && <h1 className='title section-title'>edit</h1>}
+      {classOption === 'edit' && (
+        <div className='section'>
+          <h2 className='title section-title'>Edit Grades</h2>
+        </div>
+      )}
     </Wrapper>
   );
 };

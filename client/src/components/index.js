@@ -8,8 +8,10 @@ import InfoField from './InfoField';
 import InfoLabel from './InfoLabel';
 import Class from './Class';
 import Loading from './Loading';
+import TestScores from './TestScores';
 
 export {
+  TestScores,
   Class,
   InfoLabel,
   InfoField,

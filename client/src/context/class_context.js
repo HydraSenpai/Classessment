@@ -115,7 +115,7 @@ const ClassProvider = ({ children }) => {
         score,
       });
       dispatch({ type: ADD_TEST_SUCCESS });
-      await getAllClasses();
+      await getSingleClass(state.currentClass._id);
     } catch (error) {
       if (error.response.status === 401) return;
       dispatch({
