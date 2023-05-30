@@ -247,8 +247,12 @@ const Wrapper = styled.div`
     width: 50%;
   }
   .submit-btn {
-    width: 30%;
-    height: 2.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 2.5em;
     margin-top: 0.5em;
+    font-size: 0.9em;
   }
 `;

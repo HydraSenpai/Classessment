@@ -13,6 +13,8 @@ const FormRow = ({ name, type, labelText, handleChange, value }) => {
           className='form-input'
           name={name}
           onChange={handleChange}
+          max={100}
+          min={0}
         />
       </div>
     </Wrapper>

@@ -101,6 +101,7 @@ export default Register;
 
 const Wrapper = styled.div`
   .form {
+    max-width: 30vw;
     display: flex;
     flex-direction: column;
     padding-bottom: 0.2em;

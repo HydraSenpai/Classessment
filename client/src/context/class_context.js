@@ -21,6 +21,9 @@ import {
   DELETE_CLASS_ERROR,
   DELETED_NEW_CLASS,
   DELETED_NEW_CLASS_PROCESSED,
+  ADD_TEST_ERROR,
+  ADD_TEST_BEGIN,
+  ADD_TEST_SUCCESS,
 } from '../actions';
 const initialState = {
   classes: [],
@@ -105,19 +108,18 @@ const ClassProvider = ({ children }) => {
 
   // NEED TO ADD REDUCER OPTIONS AND WILL BE FINISHED
   const addScore = async ({ name, score }) => {
-    dispatch({ type: CREATE_CLASS_BEGIN });
+    dispatch({ type: ADD_TEST_BEGIN });
     try {
-      await authFetch.patch(`/classes/${state.currentClass._id}`, {
+      await authFetch.patch(`/classes/stats/${state.currentClass._id}`, {
         name,
         score,
       });
-      dispatch({ type: CREATE_CLASS_SUCCESS });
+      dispatch({ type: ADD_TEST_SUCCESS });
       await getAllClasses();
-      dispatch({ type: CREATED_NEW_CLASS });
     } catch (error) {
       if (error.response.status === 401) return;
       dispatch({
-        type: CREATE_CLASS_ERROR,
+        type: ADD_TEST_ERROR,
         payload: { msg: error.response.data.msg },
       });
     }

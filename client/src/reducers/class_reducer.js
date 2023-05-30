@@ -17,6 +17,9 @@ import {
   DELETE_CLASS_ERROR,
   DELETED_NEW_CLASS,
   DELETED_NEW_CLASS_PROCESSED,
+  ADD_TEST_ERROR,
+  ADD_TEST_BEGIN,
+  ADD_TEST_SUCCESS,
 } from '../actions';
 
 const class_reducer = (state, action) => {
@@ -110,6 +113,15 @@ const class_reducer = (state, action) => {
   }
   if (action.type === DELETED_NEW_CLASS_PROCESSED) {
     return { ...state, deletedClass: false };
+  }
+  if (action.type === ADD_TEST_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === ADD_TEST_SUCCESS) {
+    return { ...state, isLoading: false };
+  }
+  if (action.type === ADD_TEST_ERROR) {
+    return { ...state, isLoading: false };
   }
   throw new Error(`No Matching "${action.type}" - action type`);
 };
