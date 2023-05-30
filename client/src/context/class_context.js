@@ -107,12 +107,13 @@ const ClassProvider = ({ children }) => {
   };
 
   // NEED TO ADD REDUCER OPTIONS AND WILL BE FINISHED
-  const addScore = async ({ name, score }) => {
+  const addScore = async ({ name, score, weight }) => {
     dispatch({ type: ADD_TEST_BEGIN });
     try {
       await authFetch.patch(`/classes/stats/${state.currentClass._id}`, {
         name,
         score,
+        weight,
       });
       dispatch({ type: ADD_TEST_SUCCESS });
       await getSingleClass(state.currentClass._id);

@@ -9,7 +9,8 @@ import { useUserContext } from '../../context/user_context';
 
 const initialState = {
   name: '',
-  score: null,
+  score: '',
+  weight: '',
 };
 
 const Class = () => {
@@ -36,11 +37,12 @@ const Class = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!classValues.name || !classValues.score) {
+    if (!classValues.name || !classValues.score || !classValues.weight) {
       displayAlert();
       return;
     }
     addScore(classValues);
+    setClassValues(initialState);
   };
 
   useEffect(() => {
@@ -117,13 +119,23 @@ const Class = () => {
               handleChange={handleChange}
             />
             <FormRow
-              labelText='Percentage'
+              labelText='Your Percentage'
               type='number'
               name='score'
               value={classValues.score}
               handleChange={handleChange}
+              max={100}
+              min={0}
             />
-
+            <FormRow
+              labelText='Test Weight of Class'
+              type='number'
+              name='weight'
+              value={classValues.weight}
+              handleChange={handleChange}
+              max={100}
+              min={0}
+            />
             <button type='submit' className='btn submit-btn'>
               Submit Grade
             </button>

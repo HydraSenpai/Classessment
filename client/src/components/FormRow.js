@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const FormRow = ({ name, type, labelText, handleChange, value }) => {
+const FormRow = ({ name, type, labelText, handleChange, value, max, min }) => {
   return (
     <Wrapper>
       <div className='form-row'>
@@ -13,8 +13,9 @@ const FormRow = ({ name, type, labelText, handleChange, value }) => {
           className='form-input'
           name={name}
           onChange={handleChange}
-          max={100}
-          min={0}
+          max={max}
+          min={min}
+          step='any'
         />
       </div>
     </Wrapper>

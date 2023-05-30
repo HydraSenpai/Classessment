@@ -44,8 +44,25 @@ const addStat = async (req, res) => {
     );
   }
   const currentTests = targetClass.tests;
-  console.log(currentTests);
-  currentTests.push({ name: req.body.name, score: req.body.score });
+  if (!req.body.name || !req.body.score) {
+    throw new CustomAPIError(`Please provide values`, StatusCodes.BAD_REQUEST);
+  }
+  if (
+    req.body.score > 100 ||
+    req.body.score < 0 ||
+    req.body.weight > 100 ||
+    req.body.weight < 0
+  ) {
+    throw new CustomAPIError(
+      `Values out of 0-100 bounds`,
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  currentTests.push({
+    name: req.body.name,
+    score: req.body.score,
+    weight: req.body.weight,
+  });
   console.log(currentTests);
   const updatedClass = await Class.findByIdAndUpdate(
     { _id: req.params.id },

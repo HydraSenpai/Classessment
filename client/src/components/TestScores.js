@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const TestScores = ({ tests }) => {
-  if (tests.length === 0) {
+  if (!tests || (tests && tests.length === 0)) {
     return (
       <Wrapper>
         <h3 className='title'>No Grades Entered...</h3>
@@ -11,32 +11,31 @@ const TestScores = ({ tests }) => {
   return (
     <Wrapper>
       <table cellSpacing='0'>
-        <tr>
-          <th>Grade Item</th>
-          <th>Calculated Weight</th>
-          <th>Grade</th>
-          <th>Range</th>
-          <th>Percentage</th>
-        </tr>
-        {tests.map((testScore, index) => {
-          const { name, score } = testScore;
-          return (
-            <tr className='light'>
-              <td>{name}</td>
-              <td>n/a</td>
-              <td>n/a</td>
-              <td>n/a</td>
-              <td>{score}</td>
-            </tr>
-          );
-        })}
-        <tr className='darker'>
-          <td>CLASS TOTAL:</td>
-          <td>100%</td>
-          <td>n/a</td>
-          <td>0-100</td>
-          <td>total score%</td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>Grade Item</th>
+            <th>Weight of Class</th>
+            <th>Test Percentage</th>
+            <th>Contribution to course</th>
+          </tr>
+          {tests.map((testScore, index) => {
+            const { name, score, weight } = testScore;
+            return (
+              <tr className='light' key={index}>
+                <td>{name}</td>
+                <td>{weight}</td>
+                <td>{score}</td>
+                <td>{((weight / 100) * score).toFixed(1)}</td>
+              </tr>
+            );
+          })}
+          <tr className='darker'>
+            <td>CLASS TOTAL:</td>
+            <td>100%</td>
+            <td>0-100</td>
+            <td>total score%</td>
+          </tr>
+        </tbody>
       </table>
     </Wrapper>
   );
