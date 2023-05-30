@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 
 const TestScores = ({ tests }) => {
+  if (tests.length === 0) {
+    return (
+      <Wrapper>
+        <h3 className='title'>No Grades Entered...</h3>
+      </Wrapper>
+    );
+  }
   return (
     <Wrapper>
       <table cellSpacing='0'>
@@ -79,5 +86,8 @@ const Wrapper = styled.div`
   .darker {
     background-color: var(--grey-300);
     transition: var(--transition);
+  }
+  .title {
+    margin-top: 1em;
   }
 `;
