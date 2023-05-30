@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const TestScores = ({ tests }) => {
   return (
     <Wrapper>
-      <table>
+      <table cellSpacing='0'>
         <tr>
           <th>Grade Item</th>
           <th>Calculated Weight</th>
@@ -14,7 +14,7 @@ const TestScores = ({ tests }) => {
         {tests.map((testScore, index) => {
           const { name, score } = testScore;
           return (
-            <tr className={index % 2 === 0 ? 'dark' : 'light'}>
+            <tr className='light'>
               <td>{name}</td>
               <td>n/a</td>
               <td>n/a</td>
@@ -23,6 +23,13 @@ const TestScores = ({ tests }) => {
             </tr>
           );
         })}
+        <tr className='darker'>
+          <td>CLASS TOTAL:</td>
+          <td>100%</td>
+          <td>n/a</td>
+          <td>0-100</td>
+          <td>total score%</td>
+        </tr>
       </table>
     </Wrapper>
   );
@@ -43,13 +50,17 @@ const Wrapper = styled.div`
     font-weight: 600;
     font-size: 1.4em;
   }
-
+  table {
+    margin: 0;
+    padding: 0;
+    border-radius: var(--borderRadius);
+  }
   th {
     font-weight: 600;
-    font-size: 1.4em;
+    font-size: 1.5em;
     padding: 0.3em 1em;
     text-align: center;
-    background-color: var(--grey-400);
+    background-color: var(--grey-300);
     transition: var(--transition);
   }
   td {
@@ -58,18 +69,15 @@ const Wrapper = styled.div`
     text-align: center;
     transition: var(--transition);
   }
-  .dark {
-    background-color: var(--grey-200);
-    transition: var(--transition);
-  }
-  .dark:hover {
-    background-color: var(--grey-300);
-  }
   .light {
-    background-color: var(--grey-50);
+    //background-color: var(--grey-50);
     transition: var(--transition);
   }
   .light:hover {
     background-color: var(--grey-100);
+  }
+  .darker {
+    background-color: var(--grey-300);
+    transition: var(--transition);
   }
 `;
