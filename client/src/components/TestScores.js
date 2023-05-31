@@ -1,6 +1,15 @@
 import styled from 'styled-components';
 
 const TestScores = ({ tests }) => {
+  let totalWeight = 0;
+  let totalScore = 0;
+  if (tests) {
+    for (let x = 0; x < tests.length; x++) {
+      totalWeight += parseFloat(tests[x].weight);
+      totalScore += parseFloat((tests[x].weight / 100) * tests[x].score);
+    }
+  }
+
   if (!tests || (tests && tests.length === 0)) {
     return (
       <Wrapper>
@@ -25,15 +34,16 @@ const TestScores = ({ tests }) => {
                 <td>{name}</td>
                 <td>{weight}</td>
                 <td>{score}</td>
-                <td>{((weight / 100) * score).toFixed(1)}</td>
+                <td>{((weight / 100) * score).toFixed(2)}</td>
               </tr>
             );
           })}
           <tr className='darker'>
+            {/* STILL NEED TO CALCULATE TOTALS */}
             <td>CLASS TOTAL:</td>
-            <td>100%</td>
-            <td>0-100</td>
-            <td>total score%</td>
+            <td>{totalWeight.toFixed(2)}%</td>
+            <td></td>
+            <td>{totalScore.toFixed(2)}%</td>
           </tr>
         </tbody>
       </table>
