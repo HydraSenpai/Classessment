@@ -14,6 +14,11 @@ This project was built with MERN stack
 - Edit/delete class information
 - Display stats for classes
 
+# Features to create
+
+- Status and year fields to classes
+- View classes by semester
+
 # Installation
 
 Still to release alpha version
