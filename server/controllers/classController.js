@@ -44,7 +44,7 @@ const addStat = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  const currentTests = targetClass.tests;
+  let currentTests = targetClass.tests;
   if (!req.body.name || !req.body.score) {
     throw new CustomAPIError(`Please provide values`, StatusCodes.BAD_REQUEST);
   }
@@ -84,8 +84,8 @@ const editStat = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  const currentTests = targetClass.tests;
-  if (!req.body.name || !req.body.score) {
+  let currentTests = targetClass.tests;
+  if (!req.body.name || !req.body.score || !req.body.id) {
     throw new CustomAPIError(`Please provide values`, StatusCodes.BAD_REQUEST);
   }
   if (
@@ -99,8 +99,9 @@ const editStat = async (req, res) => {
       StatusCodes.BAD_REQUEST
     );
   }
-  //REMOVE STAT WITH CORRECT ID BEFORE PUSHING NEW STAT
+  currentTests = currentTests.filter((test) => test.id !== req.body.id);
   currentTests.push({
+    id: req.body.id,
     name: req.body.name,
     score: req.body.score,
     weight: req.body.weight,

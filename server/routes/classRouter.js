@@ -16,6 +16,6 @@ router.route('/').post(createClass).get(getAllClasses);
 //router.route('/stats').get(showStats);
 router.route('/:id').delete(deleteClass).patch(updateClass).get(getClass);
 router.route('/stats/:id').patch(addStat);
-router.route('/stats/edit/:id');
+router.route('/stats/edit/:id').patch(editStat);
 
 export default router;
