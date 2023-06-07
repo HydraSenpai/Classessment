@@ -36,6 +36,7 @@ const getClass = async (req, res) => {
 };
 
 const addStat = async (req, res) => {
+  console.log(req.body);
   const targetClass = await Class.findById(req.params.id);
   if (!targetClass) {
     throw new CustomAPIError(
@@ -58,6 +59,47 @@ const addStat = async (req, res) => {
       StatusCodes.BAD_REQUEST
     );
   }
+  currentTests.push({
+    id: req.body.id,
+    name: req.body.name,
+    score: req.body.score,
+    weight: req.body.weight,
+  });
+  console.log(currentTests);
+  const updatedClass = await Class.findByIdAndUpdate(
+    { _id: req.params.id },
+    { tests: currentTests },
+    { new: true }
+  );
+  res
+    .status(StatusCodes.OK)
+    .json({ updatedClass, numOfTestsData: updatedClass.tests.length });
+};
+
+const editStat = async (req, res) => {
+  const targetClass = await Class.findById(req.params.id);
+  if (!targetClass) {
+    throw new CustomAPIError(
+      `No job with id ${req.params.id}`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  const currentTests = targetClass.tests;
+  if (!req.body.name || !req.body.score) {
+    throw new CustomAPIError(`Please provide values`, StatusCodes.BAD_REQUEST);
+  }
+  if (
+    req.body.score > 100 ||
+    req.body.score < 0 ||
+    req.body.weight > 100 ||
+    req.body.weight < 0
+  ) {
+    throw new CustomAPIError(
+      `Values out of 0-100 bounds`,
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  //REMOVE STAT WITH CORRECT ID BEFORE PUSHING NEW STAT
   currentTests.push({
     name: req.body.name,
     score: req.body.score,
@@ -100,4 +142,5 @@ export {
   updateClass,
   deleteClass,
   addStat,
+  editStat,
 };

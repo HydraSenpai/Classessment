@@ -20,6 +20,11 @@ import {
   ADD_TEST_ERROR,
   ADD_TEST_BEGIN,
   ADD_TEST_SUCCESS,
+  EDIT_TEST_BEGIN,
+  EDIT_TEST_ERROR,
+  EDIT_TEST_SUCCESS,
+  EDITING_BEGIN,
+  STOP_EDITING,
 } from '../actions';
 
 const class_reducer = (state, action) => {
@@ -122,6 +127,22 @@ const class_reducer = (state, action) => {
   }
   if (action.type === ADD_TEST_ERROR) {
     return { ...state, isLoading: false };
+  }
+  if (action.type === EDITING_BEGIN) {
+    return { ...state, isEditing: true };
+  }
+  if (action.type === EDIT_TEST_BEGIN) {
+    return { ...state, isLoading: true, isEditing: true };
+  }
+  if (action.type === EDIT_TEST_SUCCESS) {
+    return { ...state, isLoading: false, isEditing: false };
+  }
+  if (action.type === EDIT_TEST_ERROR) {
+    //SHOULD SHOW ERROR MESSAGE
+    return { ...state, isLoading: false, isEditing: false };
+  }
+  if (action.type === STOP_EDITING) {
+    return { ...state, isEditing: false };
   }
   throw new Error(`No Matching "${action.type}" - action type`);
 };

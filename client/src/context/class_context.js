@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import reducer from '../reducers/class_reducer';
 import axios from 'axios';
 import { useUserContext } from './user_context';
@@ -24,7 +24,13 @@ import {
   ADD_TEST_ERROR,
   ADD_TEST_BEGIN,
   ADD_TEST_SUCCESS,
+  EDIT_TEST_BEGIN,
+  EDIT_TEST_ERROR,
+  EDIT_TEST_SUCCESS,
+  EDITING_BEGIN,
+  STOP_EDITING,
 } from '../actions';
+
 const initialState = {
   classes: [],
   totalClasses: 0,
@@ -36,6 +42,7 @@ const initialState = {
   showAlert: false,
   alertType: '',
   alertText: '',
+  isEditing: false,
 };
 
 const ClassContext = React.createContext();
@@ -107,15 +114,17 @@ const ClassProvider = ({ children }) => {
   };
 
   // NEED TO ADD REDUCER OPTIONS AND WILL BE FINISHED
-  const addScore = async ({ name, score, weight }) => {
+  const addScore = async ({ id, name, score, weight }) => {
     dispatch({ type: ADD_TEST_BEGIN });
     try {
       await authFetch.patch(`/classes/stats/${state.currentClass._id}`, {
+        id,
         name,
         score,
         weight,
       });
       dispatch({ type: ADD_TEST_SUCCESS });
+      await getAllClasses();
       await getSingleClass(state.currentClass._id);
     } catch (error) {
       if (error.response.status === 401) return;
@@ -151,7 +160,37 @@ const ClassProvider = ({ children }) => {
   };
 
   const changeClassOption = (option) => {
+    if (state.isEditing) {
+      dispatch({ type: STOP_EDITING });
+      console.log(state.classOption);
+    }
     dispatch({ type: CHANGE_CLASS_OPTION, payload: option });
+  };
+
+  const editing = () => {
+    dispatch({ type: EDITING_BEGIN });
+  };
+
+  const editScore = async ({ id, name, score, weight }) => {
+    console.log('begin editing frontend');
+    dispatch({ type: EDIT_TEST_BEGIN });
+    try {
+      await authFetch.patch(`/classes/stats/edit/${state.currentClass._id}`, {
+        id,
+        name,
+        score,
+        weight,
+      });
+      dispatch({ type: EDIT_TEST_SUCCESS });
+      await getSingleClass(state.currentClass._id);
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_TEST_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
   };
 
   return (
@@ -167,6 +206,8 @@ const ClassProvider = ({ children }) => {
         deleteClass,
         resetDeletedList,
         addScore,
+        editScore,
+        editing,
       }}
     >
       {children}

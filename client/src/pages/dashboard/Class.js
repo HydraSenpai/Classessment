@@ -6,15 +6,16 @@ import { FormRow, Loading, TestScores } from '../../components';
 import { MdDeleteForever } from 'react-icons/md';
 import { IoChevronBack } from 'react-icons/io5';
 import { useUserContext } from '../../context/user_context';
+import uniqid from 'uniqid';
 
 const initialState = {
+  id: '',
   name: '',
   score: '',
   weight: '',
 };
 
 const Class = () => {
-  const [classSingle, setClassSingle] = useState({});
   const [classValues, setClassValues] = useState(initialState);
   const { id } = useParams();
   const {
@@ -27,27 +28,52 @@ const Class = () => {
     deletedClass,
     resetDeletedList,
     addScore,
+    isEditing,
+    editScore,
+    editing,
   } = useClassContext();
-  const { displayAlert, showAlert } = useUserContext();
+  const { displayAlert } = useUserContext();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setClassValues({ ...classValues, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!classValues.name || !classValues.score || !classValues.weight) {
       displayAlert();
       return;
     }
-    addScore(classValues);
-    setClassValues(initialState);
+    if (isEditing) {
+      editScore(classValues);
+      console.log('editing score');
+      setClassValues(initialState);
+      return;
+    } else {
+      setClassValues({ ...classValues, id: uniqid('stat-') });
+    }
   };
+
+  useEffect(() => {
+    if (!isEditing) {
+      setClassValues(initialState);
+    }
+  }, [isEditing]);
 
   useEffect(() => {
     getSingleClass(id);
   }, []);
+
+  useEffect(() => {
+    console.log('id changed');
+    if (!isLoading && classValues.id && !isEditing) {
+      console.log('adding score');
+      addScore(classValues);
+      setClassValues(initialState);
+    }
+    return;
+  }, [classValues.id]);
 
   useEffect(() => {
     if (deletedClass) {
@@ -55,6 +81,12 @@ const Class = () => {
       resetDeletedList();
     }
   }, [deletedClass]);
+
+  const startEditing = (id, name, score, weight) => {
+    editing();
+    setClassValues({ ...classValues, id, name, score, weight });
+    changeClassOption('add');
+  };
 
   if (isLoading) {
     return (
@@ -89,7 +121,9 @@ const Class = () => {
           className='option option-add'
           onClick={() => changeClassOption('add')}
         >
-          <h3 className='option-text'>Add Stats</h3>
+          <h3 className='option-text'>
+            {!isEditing ? 'Add Stats' : 'Editing Stat'}
+          </h3>
         </div>
         <div
           className='option option-delete'
@@ -109,7 +143,9 @@ const Class = () => {
       )}
       {classOption === 'add' && (
         <div className='section'>
-          <h2 className='title section-title'>Add Grade</h2>
+          <h2 className='title section-title'>
+            {!isEditing ? 'Add Stats' : 'Edit Stat'}
+          </h2>
           <form className='form-add' onSubmit={handleSubmit}>
             <FormRow
               labelText='Test Name'
@@ -137,14 +173,29 @@ const Class = () => {
               min={0}
             />
             <button type='submit' className='btn submit-btn'>
-              Submit Grade
+              {isEditing ? 'Submit Edit' : 'Submit Grade'}
             </button>
           </form>
         </div>
       )}
       {classOption === 'edit' && (
         <div className='section'>
-          <h2 className='title section-title'>Edit Grades</h2>
+          <h2 className='title section-title' style={{ marginBottom: '0.5em' }}>
+            Edit Grades
+          </h2>
+          {currentClass.tests.map((test, index) => {
+            const { id, name, score, weight } = test;
+            return (
+              <div
+                className='class-list-item'
+                key={index}
+                onClick={() => startEditing(id, name, score, weight)}
+              >
+                <h5 className='class-list-name'>{name}</h5>
+                <button className='btn-edit'>Edit</button>
+              </div>
+            );
+          })}
         </div>
       )}
     </Wrapper>
@@ -277,5 +328,30 @@ const Wrapper = styled.div`
     height: 2.5em;
     margin-top: 0.5em;
     font-size: 0.9em;
+  }
+  .class-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    transition: var(--transition);
+    padding: 0.1em 1em;
+    border-radius: var(--borderRadius);
+  }
+  .class-list-item:hover {
+    background-color: var(--grey-300);
+  }
+  .class-list-name {
+    max-width: 20em;
+    min-width: 10em;
+  }
+  .btn-edit {
+    background: none;
+    border: none;
+    color: var(--primary-500);
+  }
+  h5 {
+    margin-bottom: 0em;
   }
 `;
