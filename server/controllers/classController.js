@@ -80,7 +80,7 @@ const editStat = async (req, res) => {
   const targetClass = await Class.findById(req.params.id);
   if (!targetClass) {
     throw new CustomAPIError(
-      `No job with id ${req.params.id}`,
+      `No class with id ${req.params.id}`,
       StatusCodes.NOT_FOUND
     );
   }
@@ -100,12 +100,14 @@ const editStat = async (req, res) => {
     );
   }
   currentTests = currentTests.filter((test) => test.id !== req.body.id);
-  currentTests.push({
-    id: req.body.id,
-    name: req.body.name,
-    score: req.body.score,
-    weight: req.body.weight,
-  });
+  if (req.body.method !== 'delete') {
+    currentTests.push({
+      id: req.body.id,
+      name: req.body.name,
+      score: req.body.score,
+      weight: req.body.weight,
+    });
+  }
   console.log(currentTests);
   const updatedClass = await Class.findByIdAndUpdate(
     { _id: req.params.id },

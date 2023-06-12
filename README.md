@@ -16,7 +16,8 @@ This project was built with MERN stack
 
 # Features to create
 
-- Status and year fields to classes
+- Add Status, Start date, End date and year fields to classes
+- Add data created to stats
 - View classes by semester
 
 # Installation

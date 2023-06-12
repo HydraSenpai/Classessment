@@ -88,6 +88,11 @@ const Class = () => {
     changeClassOption('add');
   };
 
+  const startDelete = (id, name, score, weight) => {
+    editScore({ id, name, score, weight }, 'delete');
+    setClassValues(initialState);
+  };
+
   if (isLoading) {
     return (
       <Wrapper>
@@ -183,16 +188,29 @@ const Class = () => {
           <h2 className='title section-title' style={{ marginBottom: '0.5em' }}>
             Edit Grades
           </h2>
+          {!currentClass.tests ||
+          (currentClass.tests && currentClass.tests.length === 0) ? (
+            <h3 style={{ marginTop: '1em', marginBottom: '0em' }}>
+              No grades to edit...
+            </h3>
+          ) : null}
           {currentClass.tests.map((test, index) => {
             const { id, name, score, weight } = test;
             return (
-              <div
-                className='class-list-item'
-                key={index}
-                onClick={() => startEditing(id, name, score, weight)}
-              >
+              <div className='class-list-item' key={index}>
                 <h5 className='class-list-name'>{name}</h5>
-                <button className='btn-edit'>Edit</button>
+                <button
+                  className='btn-edit'
+                  onClick={() => startEditing(id, name, score, weight)}
+                >
+                  Edit
+                </button>
+                <button
+                  className='btn-delete'
+                  onClick={() => startDelete(id, name, score, weight)}
+                >
+                  Delete
+                </button>
               </div>
             );
           })}
@@ -339,17 +357,28 @@ const Wrapper = styled.div`
     padding: 0.1em 1em;
     border-radius: var(--borderRadius);
   }
-  .class-list-item:hover {
-    background-color: var(--grey-300);
-  }
   .class-list-name {
     max-width: 20em;
     min-width: 10em;
   }
   .btn-edit {
+    padding: 0.25em 0.75em;
     background: none;
     border: none;
     color: var(--primary-500);
+    border-radius: var(--borderRadius);
+  }
+  .btn-delete {
+    padding: 0.25em 0.75em;
+    background: none;
+    border: none;
+    color: var(--red-dark);
+    border-radius: var(--borderRadius);
+  }
+
+  .btn-edit:hover,
+  .btn-delete:hover {
+    background-color: var(--grey-300);
   }
   h5 {
     margin-bottom: 0em;

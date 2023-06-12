@@ -171,8 +171,7 @@ const ClassProvider = ({ children }) => {
     dispatch({ type: EDITING_BEGIN });
   };
 
-  const editScore = async ({ id, name, score, weight }) => {
-    console.log('begin editing frontend');
+  const editScore = async ({ id, name, score, weight }, method) => {
     dispatch({ type: EDIT_TEST_BEGIN });
     try {
       await authFetch.patch(`/classes/stats/edit/${state.currentClass._id}`, {
@@ -180,9 +179,11 @@ const ClassProvider = ({ children }) => {
         name,
         score,
         weight,
+        method,
       });
       dispatch({ type: EDIT_TEST_SUCCESS });
       await getSingleClass(state.currentClass._id);
+      await getAllClasses();
     } catch (error) {
       if (error.response.status === 401) return;
       dispatch({
