@@ -10,7 +10,7 @@ This project was built with MERN stack
 - Authorization
 - View and edit profile
 - Add classes
-- Add/import class information
+- Add class information
 - Edit/delete class information
 - Display stats for classes
 
@@ -18,6 +18,7 @@ This project was built with MERN stack
 
 - Add Status, Start date, End date and year fields to classes
 - Add data created to stats
+- Pagination to classes
 - View classes by semester
 
 # Installation
