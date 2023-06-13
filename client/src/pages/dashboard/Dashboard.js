@@ -23,8 +23,22 @@ const initialData = {
 const Dashboard = () => {
   const { user } = useUserContext();
   const { classes } = useClassContext();
+  const [classData, setClassData] = useState([]);
 
-  const calculateData = () => {};
+  const calculateData = () => {
+    let classData = [];
+    let score = 0;
+    let divisor = 0;
+    for (let x = 0; x < classes.length; x++) {
+      for (let y = 0; y < classes[x].tests.length; y++) {
+        score += parseInt(classes[x].tests[y].score);
+      }
+      score = score / classes[x].tests.length;
+      classData.push({ name: classes[x].name, score: score });
+      score = 0;
+    }
+    setClassData(classData);
+  };
 
   const data = [
     { score: 56, year: 'Year 1' },
@@ -57,6 +71,33 @@ const Dashboard = () => {
         <h2 className='title'>{`Welcome ${user.name}!`}</h2>
       </div>
       <div className='form data-section'>
+        <div className='graph' style={{ gridColumn: 'span 2' }}>
+          <h5 className='graph-title'>Average Test Score by Class</h5>
+          <ResponsiveContainer width='99%' aspect={3}>
+            <LineChart
+              data={classData}
+              title='Total Score'
+              margin={{
+                top: 5,
+                right: 5,
+                left: 0,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray='3 3' />
+              <XAxis dataKey='name' />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line
+                type='natural'
+                dataKey='score'
+                stroke='#9327d2'
+                activeDot={{ r: 8 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
         <div className='graph'>
           <h5 className='graph-title'>Average Score by Year</h5>
           <ResponsiveContainer width='99%' aspect={1.5}>

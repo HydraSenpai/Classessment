@@ -16,6 +16,21 @@ const ClassSchema = mongoose.Schema({
     required: [true, 'Please provide empty test or test data'],
     default: [],
   },
+  // status: {
+  //   type: String,
+  //   enum: ['ongoing', 'complete'],
+  //   default: 'ongoing',
+  // },
+  // startDate: {
+  //   type: Date,
+  //   min: '2020-01-01',
+  //   max: '2030-01-01',
+  // },
+  // endDate: {
+  //   type: Date,
+  //   min: '2020-01-01',
+  //   max: '2030-01-01',
+  // },
   createdBy: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
