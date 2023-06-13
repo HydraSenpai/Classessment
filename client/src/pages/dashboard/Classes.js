@@ -86,7 +86,13 @@ const Classes = () => {
           <div className='classes'>
             {classes.map((classSingle) => {
               const { name, _id } = classSingle;
-              return <Class name={name} id={_id} key={_id} {...classSingle} />;
+              let score = 0;
+              for (let x = 0; x < classSingle.tests.length; x++) {
+                score += parseInt(classSingle.tests[x].score);
+              }
+              score = score / classSingle.tests.length;
+              console.log(classSingle);
+              return <Class name={name} id={_id} key={_id} score={score} />;
             })}
           </div>
         </div>

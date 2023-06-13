@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
-const Class = ({ name, id }) => {
+const Class = ({ name, id, score }) => {
   return (
     <Wrapper>
       <div className='class'>
         <h5 className='class-title'>{name}</h5>
-        <p>Current Score: 50%</p>
+        <p>Current Average: {score}%</p>
         <div className='buttons'>
           <Link to={`/class/${id}`} className='btn btn-main'>
             Edit/Stats
