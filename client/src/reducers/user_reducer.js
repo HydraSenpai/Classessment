@@ -12,6 +12,7 @@ import {
   EDIT_USER_BEGIN,
   EDIT_USER_SUCCESS,
   EDIT_USER_ERROR,
+  RESET_USER,
 } from '../actions';
 import { initialState } from '../context/user_context';
 
@@ -102,6 +103,7 @@ const user_reducer = (state, action) => {
     return {
       ...state,
       isLoading: true,
+      isEditing: true,
     };
   }
   if (action.type === EDIT_USER_SUCCESS) {
@@ -112,6 +114,7 @@ const user_reducer = (state, action) => {
       showAlert: true,
       alertType: 'success',
       alertText: 'Updated Value!',
+      isEditing: false,
     };
   }
   if (action.type === EDIT_USER_ERROR) {
@@ -122,7 +125,11 @@ const user_reducer = (state, action) => {
       alertType: 'danger',
       alertText:
         action.payload.msg || 'Unable to update value, try again later...',
+      isEditing: false,
     };
+  }
+  if (action.type === RESET_USER) {
+    return { ...state, user: action.payload.user };
   }
   throw new Error(`No Matching "${action.type}" - action type`);
 };

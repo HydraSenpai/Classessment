@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const InfoField = ({ value, field, editing, handleChange, name }) => {
+const InfoField = ({ value, field, editing, handleChange, name, type }) => {
   return (
     <Wrapper>
       <div field={field} className='field'>
         <input
-          type='text'
+          type={type || 'text'}
           id={name}
           name={name}
           className={editing ? 'input editing' : 'input'}
@@ -34,7 +34,6 @@ const Wrapper = styled.div`
     //box-shadow: var(--shadow-1);
   }
   input {
-    /* border: 1px solid black; */
     font-size: 1.5em;
     color: var(--black);
     border: none;

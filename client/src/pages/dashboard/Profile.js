@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { useUserContext } from '../../context/user_context';
 import { InfoField, InfoLabel, Alert } from '../../components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Profile = () => {
   const [fieldEditing, setFieldEditing] = useState('');
   const { user, isEditing, editUser } = useUserContext();
+  const [savedEmail, setSavedEmail] = useState(user.email);
   let fieldsInitial = {
     name: user.name,
     lastName: user.lastName,
@@ -14,10 +15,16 @@ const Profile = () => {
     bio: user.bio || '',
     favoriteSubject: user.favoriteSubject || '',
   };
+  console.log(user);
   const [fields, setFields] = useState(fieldsInitial);
 
   const handleChange = (e) => {
     setFields({ ...fields, [e.target.name]: e.target.value });
+  };
+
+  const resetUser = () => {
+    console.log(savedEmail);
+    setFields({ ...fields, email: savedEmail });
   };
 
   const editField = (data, value) => {
@@ -25,9 +32,26 @@ const Profile = () => {
       setFieldEditing(data);
       return;
     }
-    editUser(data, value);
+    if (value === user[data] || value === '') {
+      setFieldEditing('');
+      return;
+    }
+    editUser(data, value, resetUser);
     setFieldEditing('');
   };
+
+  useEffect(() => {
+    if (!isEditing) {
+      setFields({
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        dob: user.dob || '',
+        bio: user.bio || '',
+        favoriteSubject: user.favoriteSubject || '',
+      });
+    }
+  }, [isEditing]);
 
   return (
     <Wrapper>
@@ -40,12 +64,22 @@ const Profile = () => {
             return (
               <>
                 <InfoLabel text={dataItem} />
-                <InfoField
-                  value={fields[dataItem]}
-                  name={dataItem}
-                  editing={fieldEditing === dataItem}
-                  handleChange={handleChange}
-                />
+                {dataItem === 'dob' ? (
+                  <InfoField
+                    type={'date'}
+                    value={fields[dataItem]}
+                    name={dataItem}
+                    editing={fieldEditing === dataItem}
+                    handleChange={handleChange}
+                  />
+                ) : (
+                  <InfoField
+                    value={fields[dataItem]}
+                    name={dataItem}
+                    editing={fieldEditing === dataItem}
+                    handleChange={handleChange}
+                  />
+                )}
                 <button
                   type='button'
                   className='btn edit-btn'

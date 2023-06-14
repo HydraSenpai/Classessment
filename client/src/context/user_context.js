@@ -16,6 +16,7 @@ import {
   EDIT_USER_BEGIN,
   EDIT_USER_SUCCESS,
   EDIT_USER_ERROR,
+  RESET_USER,
 } from '../actions';
 
 const user = localStorage.getItem('user');
@@ -123,7 +124,7 @@ const UserProvider = ({ children }) => {
     clearAlert();
   };
 
-  const editUser = async (title, value) => {
+  const editUser = async (title, value, setEmail) => {
     dispatch({ type: EDIT_USER_BEGIN });
     const { _id: id } = state.user;
     try {
@@ -132,14 +133,20 @@ const UserProvider = ({ children }) => {
         value,
         id,
       });
+      console.log(response.data);
       dispatch({
         type: EDIT_USER_SUCCESS,
         payload: { user: response.data.user },
       });
       addUserToLocalStorage({
         user: response.data.user,
+        token: state.token,
       });
     } catch (error) {
+      console.log(error.response.status);
+      if (error.response.status === 400) {
+        setEmail();
+      }
       dispatch({
         type: EDIT_USER_ERROR,
         payload: { msg: error.response.data.msg },

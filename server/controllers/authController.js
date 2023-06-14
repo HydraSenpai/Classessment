@@ -68,9 +68,23 @@ const updateUser = async (req, res) => {
   if (!user) {
     throw new CustomAPIError('Invalid User', StatusCodes.UNAUTHORIZED);
   }
+  if (title === 'email') {
+    const checkEmail = await User.findOne({ email: value });
+    if (checkEmail) {
+      throw new CustomAPIError(
+        `Email ${value} already exists. Try again...`,
+        StatusCodes.BAD_REQUEST
+      );
+    }
+  }
+  const validate = { _id: id };
   const update = { [title]: value };
   const options = { new: true };
-  user = await User.findByIdAndUpdate(id, update, options);
+  user = await User.findOneAndUpdate(validate, update, options).select(
+    '+password'
+  );
+  //const token = user.createJWT();
+  user.password = undefined;
   res.status(StatusCodes.OK).json({ user });
 };
 
