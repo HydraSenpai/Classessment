@@ -22,13 +22,16 @@ const initialData = {
 };
 const Dashboard = () => {
   const { user } = useUserContext();
-  const { classes } = useClassContext();
+  const { classes, getAllClasses } = useClassContext();
   const [classData, setClassData] = useState([]);
+
+  useEffect(() => {
+    getAllClasses();
+  }, []);
 
   const calculateData = () => {
     let classData = [];
     let score = 0;
-    let divisor = 0;
     for (let x = 0; x < classes.length; x++) {
       for (let y = 0; y < classes[x].tests.length; y++) {
         score += parseInt(classes[x].tests[y].score);

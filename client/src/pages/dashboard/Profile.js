@@ -15,7 +15,6 @@ const Profile = () => {
     bio: user.bio || '',
     favoriteSubject: user.favoriteSubject || '',
   };
-  console.log(user);
   const [fields, setFields] = useState(fieldsInitial);
 
   const handleChange = (e) => {

@@ -30,14 +30,16 @@ const Wrapper = styled.div`
     margin-bottom: 1.5em;
   }
   .editing {
-    border: 2px solid rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--primary-700);
     border-radius: var(--borderRadius);
     //box-shadow: var(--shadow-1);
   }
   input {
+    min-width: 15em;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-radius: var(--borderRadius);
     font-size: 1.5em;
     color: var(--black);
-    border: none;
     text-transform: none;
     margin-right: 5em;
     padding: 0.1em 0.5em;
