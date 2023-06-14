@@ -68,14 +68,14 @@ const Profile = () => {
                     type={'date'}
                     value={fields[dataItem]}
                     name={dataItem}
-                    editing={fieldEditing === dataItem}
+                    editing={fieldEditing}
                     handleChange={handleChange}
                   />
                 ) : (
                   <InfoField
                     value={fields[dataItem]}
                     name={dataItem}
-                    editing={fieldEditing === dataItem}
+                    editing={fieldEditing}
                     handleChange={handleChange}
                   />
                 )}

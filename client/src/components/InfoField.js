@@ -10,10 +10,17 @@ const InfoField = ({ value, field, editing, handleChange, name, type }) => {
           type={type || 'text'}
           id={name}
           name={name}
-          className={editing ? 'input editing' : 'input'}
+          className={
+            editing === name
+              ? 'input editing'
+              : editing === ''
+              ? 'input'
+              : 'input input-edit'
+          }
           value={fixedValue}
           readOnly={!editing}
           onChange={handleChange}
+          max={new Date().toISOString().split('T')[0]}
         ></input>
       </div>
     </Wrapper>
@@ -36,7 +43,7 @@ const Wrapper = styled.div`
   }
   input {
     min-width: 15em;
-    border: 2px solid rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 0, 0, 0.4);
     border-radius: var(--borderRadius);
     font-size: 1.5em;
     color: var(--black);
@@ -44,6 +51,9 @@ const Wrapper = styled.div`
     margin-right: 5em;
     padding: 0.1em 0.5em;
     box-sizing: border-box;
+  }
+  .input-edit {
+    border: 2px solid rgba(0, 0, 0, 0.1);
   }
   input:focus {
     outline: none;
