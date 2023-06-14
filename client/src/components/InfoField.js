@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 const InfoField = ({ value, field, editing, handleChange, name, type }) => {
+  let fixedValue = value.split('T')[0];
   return (
     <Wrapper>
       <div field={field} className='field'>
@@ -10,7 +11,7 @@ const InfoField = ({ value, field, editing, handleChange, name, type }) => {
           id={name}
           name={name}
           className={editing ? 'input editing' : 'input'}
-          value={value}
+          value={fixedValue}
           readOnly={!editing}
           onChange={handleChange}
         ></input>
