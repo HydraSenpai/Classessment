@@ -1,33 +1,61 @@
 import styled from 'styled-components';
 import { useUserContext } from '../../context/user_context';
-import { InfoField, InfoLabel } from '../../components';
-import { v4 as uuidv4 } from 'uuid';
+import { InfoField, InfoLabel, Alert } from '../../components';
 import { useState } from 'react';
 
 const Profile = () => {
-  const { user } = useUserContext();
-  const fields = {
+  const [fieldEditing, setFieldEditing] = useState('');
+  const { user, isEditing, editUser } = useUserContext();
+  let fieldsInitial = {
     name: user.name,
     lastName: user.lastName,
     email: user.email,
-    dob: user.dob,
-    bio: user.bio,
-    favoriteSubject: user.favoriteSubject,
+    dob: user.dob || '',
+    bio: user.bio || '',
+    favoriteSubject: user.favoriteSubject || '',
+  };
+  const [fields, setFields] = useState(fieldsInitial);
+
+  const handleChange = (e) => {
+    setFields({ ...fields, [e.target.name]: e.target.value });
+  };
+
+  const editField = (data, value) => {
+    if (!fieldEditing) {
+      setFieldEditing(data);
+      return;
+    }
+    editUser(data, value);
+    setFieldEditing('');
   };
 
   return (
     <Wrapper>
       <div className='form'>
         <h2 className='title'>Profile</h2>
+        <Alert />
         <span className='title-underline'></span>
         <div className='info-container'>
           {Object.keys(fields).map((dataItem) => {
             return (
               <>
-                <InfoLabel key={uuidv4()} text={dataItem} />
-                <InfoField key={uuidv4()} value={fields[dataItem]} />
-                <button key={uuidv4()} type='button' className='btn edit-btn'>
-                  Edit
+                <InfoLabel text={dataItem} />
+                <InfoField
+                  value={fields[dataItem]}
+                  name={dataItem}
+                  editing={fieldEditing === dataItem}
+                  handleChange={handleChange}
+                />
+                <button
+                  type='button'
+                  className='btn edit-btn'
+                  onClick={() => editField(dataItem, fields[dataItem])}
+                >
+                  {!fieldEditing
+                    ? 'Edit'
+                    : fieldEditing === dataItem
+                    ? 'Save'
+                    : ''}
                 </button>
               </>
             );
@@ -50,10 +78,12 @@ const Wrapper = styled.div`
     display: grid;
     grid-template-columns: 10em 1fr 3em;
     grid-template-rows: auto;
-    column-gap: 2em;
+    column-gap: 1.5em;
+    row-gap: 1em;
+    align-items: center;
   }
   .title {
-    margin-bottom: 1.5em;
+    margin-bottom: 1em;
   }
   .edit-btn {
     padding: 0;

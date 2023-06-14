@@ -21,6 +21,8 @@ const Wrapper = styled.div`
   }
   h4 {
     text-transform: none;
+    margin: 0;
+    text-transform: capitalize;
   }
   @media screen and (max-width: 950px) {
     h4 {

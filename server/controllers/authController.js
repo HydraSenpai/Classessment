@@ -57,7 +57,21 @@ const login = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  res.send('update user');
+  const { title, value, id } = req.body;
+  if (!title || !value || !id) {
+    throw new CustomAPIError(
+      'Please provide all values',
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  let user = await User.findById({ _id: id });
+  if (!user) {
+    throw new CustomAPIError('Invalid User', StatusCodes.UNAUTHORIZED);
+  }
+  const update = { [title]: value };
+  const options = { new: true };
+  user = await User.findByIdAndUpdate(id, update, options);
+  res.status(StatusCodes.OK).json({ user });
 };
 
 export { login, updateUser, register };

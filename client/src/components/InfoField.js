@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const InfoField = ({ value, field }) => {
+const InfoField = ({ value, field, editing, handleChange, name }) => {
   return (
     <Wrapper>
-      <div className='data-container' field={field}>
-        <h4>{value || '...'}</h4>
+      <div field={field} className='field'>
+        <input
+          type='text'
+          id={name}
+          name={name}
+          className={editing ? 'input editing' : 'input'}
+          value={value}
+          readOnly={!editing}
+          onChange={handleChange}
+        ></input>
       </div>
     </Wrapper>
   );
@@ -14,16 +22,29 @@ const InfoField = ({ value, field }) => {
 export default InfoField;
 
 const Wrapper = styled.div`
-  .info-container {
-    display: grid;
-    grid-template-columns: 10em;
-    grid-template-rows: auto;
+  .field {
+    align-self: center;
   }
   .title {
     margin-bottom: 1.5em;
   }
-  h4 {
+  .editing {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-radius: var(--borderRadius);
+    //box-shadow: var(--shadow-1);
+  }
+  input {
+    /* border: 1px solid black; */
+    font-size: 1.5em;
+    color: var(--black);
+    border: none;
     text-transform: none;
+    margin-right: 5em;
+    padding: 0.1em 0.5em;
+    box-sizing: border-box;
+  }
+  input:focus {
+    outline: none;
   }
   @media screen and (max-width: 950px) {
     h4 {

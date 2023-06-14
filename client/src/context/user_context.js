@@ -13,6 +13,9 @@ import {
   REGISTER_USER_SUCCESS,
   REGISTER_USER_ERROR,
   SHOW_CUSTOM_ALERT,
+  EDIT_USER_BEGIN,
+  EDIT_USER_SUCCESS,
+  EDIT_USER_ERROR,
 } from '../actions';
 
 const user = localStorage.getItem('user');
@@ -22,6 +25,7 @@ const initialState = {
   user: user ? JSON.parse(user) : null,
   token: token || null,
   isLoading: false,
+  isEditing: false,
   showAlert: false,
   alertText: '',
   alertType: '',
@@ -31,6 +35,13 @@ const UserContext = React.createContext();
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const authFetch = axios.create({
+    baseURL: '/api/v1',
+    headers: {
+      Authorization: `Bearer ${state.token}`,
+    },
+  });
 
   const addUserToLocalStorage = ({ user, token }) => {
     localStorage.setItem('user', JSON.stringify(user));
@@ -112,6 +123,31 @@ const UserProvider = ({ children }) => {
     clearAlert();
   };
 
+  const editUser = async (title, value) => {
+    dispatch({ type: EDIT_USER_BEGIN });
+    const { _id: id } = state.user;
+    try {
+      const response = await authFetch.patch('/auth/update', {
+        title,
+        value,
+        id,
+      });
+      dispatch({
+        type: EDIT_USER_SUCCESS,
+        payload: { user: response.data.user },
+      });
+      addUserToLocalStorage({
+        user: response.data.user,
+      });
+    } catch (error) {
+      dispatch({
+        type: EDIT_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -120,6 +156,7 @@ const UserProvider = ({ children }) => {
         setUser,
         logoutUser,
         loginUser,
+        editUser,
         clearAlert,
         displayCustomAlert,
       }}
